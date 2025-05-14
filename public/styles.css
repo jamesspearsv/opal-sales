@@ -9,13 +9,10 @@
   box-sizing: border-box;
 }
 
-body {
-  font-size: 16px;
+nav.nav {
+  padding-inline: 2rem;
 }
 
-nav {
-  margin: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 1rem;
+main.main {
+  margin-inline: 4rem;
 }

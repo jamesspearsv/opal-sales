@@ -4,12 +4,15 @@
   "scripts": {
     "dev": "tsx watch src/index.tsx",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "drizzle:kit": "pnpm exec drizzle-kit"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.1",
+    "@libsql/client": "^0.15.6",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
+    "drizzle-seed": "^0.3.1",
     "hono": "^4.7.9"
   },
   "devDependencies": {

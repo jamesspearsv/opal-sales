@@ -1,6 +1,6 @@
 export default function Nav() {
   return (
-    <nav>
+    <nav class={'nav'}>
       <ul>
         <li>
           <a href="/">Items</a>

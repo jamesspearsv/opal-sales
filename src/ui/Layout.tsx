@@ -12,12 +12,13 @@ export default function Layout(props: PropsWithChildren) {
           href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.jade.min.css"
         ></link>
         <script src="//unpkg.com/alpinejs" defer></script>
+        <link rel="stylesheet" href="/public/styles.css" />
         <title>Opal Store + Hono</title>
       </head>
       <body>
         <div id="root">
           <Nav />
-          <main>{props.children}</main>
+          <main class={'main'}>{props.children}</main>
         </div>
       </body>
     </html>
