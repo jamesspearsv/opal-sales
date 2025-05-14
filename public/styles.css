@@ -16,3 +16,10 @@ nav.nav {
 main.main {
   margin-inline: 4rem;
 }
+
+.new-item-modal {
+  /* background-color: white; */
+  padding: 4rem;
+  border: none;
+  border-radius: 0.5rem;
+}

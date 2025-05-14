@@ -15,7 +15,7 @@ export default function Layout(props: PropsWithChildren) {
         <link rel="stylesheet" href="/public/styles.css" />
         <title>Opal Store + Hono</title>
       </head>
-      <body>
+      <body x-data>
         <div id="root">
           <Nav />
           <main class={'main'}>{props.children}</main>
