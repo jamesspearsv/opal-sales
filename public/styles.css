@@ -14,7 +14,8 @@ nav.nav {
 }
 
 main.main {
-  margin-inline: 4rem;
+  width: 75%;
+  margin: auto;
 }
 
 .new-item-modal {
@@ -32,5 +33,5 @@ button.btn {
 
 .flex-horizontal {
   display: flex;
-  justify-content: space-between;
+  gap: 2rem;
 }

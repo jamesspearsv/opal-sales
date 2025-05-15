@@ -14,7 +14,7 @@ export const items = sqliteTable('items', {
 
 export const sales = sqliteTable('sales', {
   id: int().primaryKey({ autoIncrement: true }),
-  sale_amount: int().notNull(),
+  sale_price: int().notNull(),
   sale_date: text().notNull(),
   item_id: int()
     .references(() => items.id, { onDelete: 'no action' })

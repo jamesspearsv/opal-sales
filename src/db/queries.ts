@@ -2,6 +2,10 @@ import { db, items, sales } from '@/db/schema.js';
 import { eq } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 
+/**
+ * Seeds an empty database with test items
+ * @returns
+ */
 export async function seedDatabase() {
   try {
     await seed(db, { items });
@@ -12,13 +16,16 @@ export async function seedDatabase() {
   }
 }
 
+/**
+ * Selects all item rows and their related sale rows
+ * @returns
+ */
 export async function selectItems() {
   try {
     const rows = await db
       .select()
       .from(items)
       .leftJoin(sales, eq(sales.item_id, items.id));
-    console.log(rows);
     return rows;
   } catch (error) {
     console.error(error);
@@ -26,13 +33,16 @@ export async function selectItems() {
   }
 }
 
+/**
+ * Selects all sale rows and related item rows
+ * @returns
+ */
 export async function selectSales() {
   try {
     const rows = await db
       .select()
       .from(sales)
       .leftJoin(items, eq(items.id, sales.item_id));
-    console.log(rows);
     return rows;
   } catch (error) {
     console.error(error);
@@ -40,6 +50,11 @@ export async function selectSales() {
   }
 }
 
+/**
+ * Inserts a new item row into the items table
+ * @param item
+ * @returns
+ */
 export async function insertItem(item: { name: string; list_price: number }) {
   try {
     await db
@@ -52,14 +67,19 @@ export async function insertItem(item: { name: string; list_price: number }) {
   }
 }
 
+/**
+ * Inserts a new sale row into the sales table
+ * @param sale
+ * @returns
+ */
 export async function insertSale(sale: {
-  sale_amount: number;
+  sale_price: number;
   sale_date: string;
   item_id: number;
 }) {
   try {
     await db.insert(sales).values({
-      sale_amount: sale.sale_amount,
+      sale_price: sale.sale_price,
       sale_date: sale.sale_date,
       item_id: sale.item_id,
     });

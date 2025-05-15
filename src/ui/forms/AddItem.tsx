@@ -6,11 +6,10 @@ export default function NewItem() {
         <input type="text" name="name" required />
         <label htmlFor="list_price">Listing Price</label>
         <input
-          type="number"
+          type="text"
           name="list_price"
-          min="0.01"
-          max="1000"
-          step="0.01"
+          pattern="[0-9]+\.\d\d"
+          placeholder="1000.12"
           required
         />
       </fieldset>

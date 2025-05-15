@@ -1,3 +1,4 @@
+import { Hono } from 'hono';
 import {
   seedDatabase,
   selectItems,
@@ -6,8 +7,8 @@ import {
   selectSales,
 } from './db/queries.js';
 import HomeView from './ui/views/HomeView.js';
-import { Hono } from 'hono';
 import SalesView from './ui/views/SalesView.js';
+import type { Item, Sale } from './lib/types.js';
 
 export const router = new Hono();
 
@@ -30,9 +31,13 @@ router
     const name = data.get('name') as string;
     const list_price = data.get('list_price') as string;
 
+    const price_int =
+      parseInt(list_price.split('.')[0]) * 100 +
+      parseInt(list_price.split('.')[1]);
+
     const result = await insertItem({
       name,
-      list_price: parseInt(list_price),
+      list_price: price_int,
     });
     if (!result) return c.redirect('/?error=true');
 
@@ -42,18 +47,24 @@ router
 router
   .get('/sales', async (c) => {
     const rows = await selectSales();
-    return c.render(<SalesView rows={rows ? rows : []} />);
+    return c.render(
+      <SalesView rows={rows as { sales: Sale; items: Item }[]} />
+    );
   })
   .post('/sales', async (c) => {
     const data = await c.req.formData();
     console.log(data);
     const item_id = data.get('item_id') as string;
-    const sale_amount = data.get('sale_amount') as string;
+    const sale_price = data.get('sale_price') as string;
     const sale_date = data.get('sale_date') as string;
+
+    const amount_int =
+      parseInt(sale_price.split('.')[0]) * 100 +
+      parseInt(sale_price.split('.')[1]);
 
     const result = await insertSale({
       item_id: parseInt(item_id),
-      sale_amount: parseInt(sale_amount),
+      sale_price: amount_int,
       sale_date,
     });
 

@@ -4,10 +4,12 @@ import { jsxRenderer } from 'hono/jsx-renderer';
 import { serveStatic } from '@hono/node-server/serve-static';
 import Layout from './ui/Layout.js';
 import { router } from './routes.js';
+import { logger } from 'hono/logger';
 
 export const app = new Hono();
 
 /* APP MIDDLEWARE */
+app.use(logger());
 app.use(jsxRenderer(({ children }) => <Layout>{children}</Layout>));
 app.use(
   '/public/*',
