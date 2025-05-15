@@ -1,13 +1,13 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { jsxRenderer } from 'hono/jsx-renderer';
-import Layout from './ui/Layout.js';
-import HomeView from './ui/Views/HomeView.js';
 import { serveStatic } from '@hono/node-server/serve-static';
-import { insertItem, seedDatabase, selectItems } from './db/queries.js';
+import Layout from './ui/Layout.js';
+import { router } from './routes.js';
 
-const app = new Hono();
+export const app = new Hono();
 
+/* APP MIDDLEWARE */
 app.use(jsxRenderer(({ children }) => <Layout>{children}</Layout>));
 app.use(
   '/public/*',
@@ -19,30 +19,7 @@ app.use(
   })
 );
 
-app.get('/seed', async (c) => {
-  const result = await seedDatabase();
-  if (result) return c.text('Database seeded!');
-  return c.text('Unable to seed database...');
-});
-
-app
-  .get('/', async (c) => {
-    const items = await selectItems();
-    // console.log('items:', items);
-    return c.render(<HomeView items={items || []} />);
-  })
-  .post(async (c) => {
-    const body = await c.req.parseBody();
-    console.log(body);
-
-    const name = body.name as string;
-    const list_price = parseInt(body.list_price as string);
-
-    const result = await insertItem({ name, list_price });
-
-    if (!result) return c.redirect('/?error=true');
-    return c.redirect('/');
-  });
+app.route('', router);
 
 serve(
   {
