@@ -2,7 +2,7 @@
   "name": "opal-sales",
   "type": "module",
   "scripts": {
-    "dev": "pnpm exec vite",
+    "dev": "tsx watch src/index.tsx",
     "build": "tsc",
     "start": "node dist/src/index.js",
     "drizzle:kit": "pnpm exec drizzle-kit"

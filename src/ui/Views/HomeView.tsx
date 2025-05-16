@@ -12,21 +12,31 @@ interface HomeProps {
 
 export default function HomeView(props: HomeProps) {
   return (
-    <div x-data="{selecting: false}">
+    <section x-data="{selected: []}">
       <div class="flex-horizontal">
         <h1>Items</h1>
         <Modal label="New Item">
           <NewItem />
         </Modal>
+        <template x-if="selected.length > 0">
+          <button>Make a bundle</button>
+        </template>
+        <template x-if="selected.length > 0">
+          <button>Cancel</button>
+        </template>
       </div>
-      {/* 
-      <button x-on:click="selecting = !selecting">Select</button>
-       */}
-      <table>
+      <table
+        x-on:select="() => {
+        console.log('listening to select')
+        console.log(typeof selected)
+        selected.push($event.detail.id)
+        }"
+        x-on:remove="() => {
+        selected = selected.filter((id) => id !== $event.detail.id)
+        }"
+      >
         <thead>
-          {/* 
-          <th x-show="!selecting"></th>
-           */}
+          <th></th>
           <th>id</th>
           <th>name</th>
           <th>list_price</th>
@@ -37,11 +47,19 @@ export default function HomeView(props: HomeProps) {
             (row) =>
               !row.sales && (
                 <tr>
-                  {/* 
-                  <td x-show="!selecting">
-                    <button>Select</button>
+                  <td>
+                    <input
+                      type="checkbox"
+                      value={row.items.id}
+                      x-on:change="() => {
+                       if ($event.currentTarget.checked) {
+                       $dispatch('select', {id: $event.currentTarget.value})
+                       } else {
+                        $dispatch('remove', {id: $event.currentTarget.value})}
+                      }"
+                    />
                   </td>
-                    */}
+
                   <td>{row.items.id}</td>
                   <td>{row.items.name}</td>
                   <td>${Number(row.items.list_price / 100).toFixed(2)}</td>
@@ -58,6 +76,6 @@ export default function HomeView(props: HomeProps) {
           )}
         </tbody>
       </table>
-    </div>
+    </section>
   );
 }
