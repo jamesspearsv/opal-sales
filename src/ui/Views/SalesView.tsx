@@ -1,3 +1,4 @@
+import { parseDateString } from '../../lib/helpers.js';
 import type { Item, Sale } from '@/lib/types.js';
 import type { PropsWithChildren } from 'hono/jsx';
 
@@ -33,7 +34,7 @@ export default function SalesView(props: SalesViewProps) {
                   (row.sales.sale_price - row.items.list_price) / 100
                 ).toFixed(2)}
               </td>
-              <td>{row.sales.sale_date}</td>
+              <td>{parseDateString(row.sales.sale_date)}</td>
             </tr>
           ))}
         </tbody>

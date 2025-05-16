@@ -7,6 +7,6 @@ export interface Item {
 export interface Sale {
   id: number;
   sale_price: number;
-  sale_date: string;
+  sale_date: number;
   item_id: number;
 }

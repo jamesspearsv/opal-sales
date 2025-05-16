@@ -14,8 +14,7 @@ nav.nav {
 }
 
 main.main {
-  width: 75%;
-  margin: auto;
+  margin-inline: 4rem;
 }
 
 .new-item-modal {

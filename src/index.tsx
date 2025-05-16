@@ -26,9 +26,11 @@ app.route('', router);
 serve(
   {
     fetch: app.fetch,
-    port: 5183,
+    port: 3000,
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
   }
 );
+
+export default app;

@@ -9,13 +9,13 @@ export const db = drizzle(process.env.DATABASE_URL!);
 export const items = sqliteTable('items', {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
-  list_price: int().notNull(),
+  list_price: int().notNull(), // in total cents
 });
 
 export const sales = sqliteTable('sales', {
   id: int().primaryKey({ autoIncrement: true }),
-  sale_price: int().notNull(),
-  sale_date: text().notNull(),
+  sale_price: int().notNull(), // in total cents
+  sale_date: int().notNull(), // int representing YYYYMMDD format
   item_id: int()
     .references(() => items.id, { onDelete: 'no action' })
     .notNull(),

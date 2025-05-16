@@ -1,6 +1,6 @@
-import { db, items, sales } from '@/db/schema.js';
 import { eq } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
+import { db, items, sales } from './schema.js';
 
 /**
  * Seeds an empty database with test items
@@ -74,7 +74,7 @@ export async function insertItem(item: { name: string; list_price: number }) {
  */
 export async function insertSale(sale: {
   sale_price: number;
-  sale_date: string;
+  sale_date: number;
   item_id: number;
 }) {
   try {

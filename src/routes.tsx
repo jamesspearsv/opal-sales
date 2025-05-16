@@ -9,6 +9,7 @@ import {
 import HomeView from './ui/views/HomeView.js';
 import SalesView from './ui/views/SalesView.js';
 import type { Item, Sale } from './lib/types.js';
+import { parseDateInt } from './lib/helpers.js';
 
 export const router = new Hono();
 
@@ -62,10 +63,13 @@ router
       parseInt(sale_price.split('.')[0]) * 100 +
       parseInt(sale_price.split('.')[1]);
 
+    const date_int = parseDateInt(sale_date);
+    console.log(date_int);
+
     const result = await insertSale({
       item_id: parseInt(item_id),
       sale_price: amount_int,
-      sale_date,
+      sale_date: date_int,
     });
 
     if (!result) return c.redirect('/?error=true');
