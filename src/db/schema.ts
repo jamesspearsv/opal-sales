@@ -9,7 +9,9 @@ export const db = drizzle(process.env.DATABASE_URL!);
 export const items = sqliteTable('items', {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
+  purchase_cost: int().notNull(), // in total cents
   list_price: int().notNull(), // in total cents
+  item_desc: text(),
 });
 
 export const sales = sqliteTable('sales', {

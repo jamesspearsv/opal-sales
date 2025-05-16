@@ -18,10 +18,13 @@ export default function HomeView(props: HomeProps) {
         <Modal label="New Item">
           <NewItem />
         </Modal>
-        <template x-if="selected.length > 0">
-          <button>Make a bundle</button>
+        <template x-if="selected.length > 1">
+          <form action="/bundle" method="post" x-ref="bundle-form">
+            <input type="hidden" name="items" x-bind:value="selected" />
+            <input type="submit" value="Make a bundle" style="margin:0;" />
+          </form>
         </template>
-        <template x-if="selected.length > 0">
+        <template x-if="selected.length > 1">
           <button>Cancel</button>
         </template>
       </div>
@@ -39,6 +42,7 @@ export default function HomeView(props: HomeProps) {
           <th></th>
           <th>id</th>
           <th>name</th>
+          <th>purchase_cost</th>
           <th>list_price</th>
           <th></th>
         </thead>
@@ -59,9 +63,9 @@ export default function HomeView(props: HomeProps) {
                       }"
                     />
                   </td>
-
                   <td>{row.items.id}</td>
                   <td>{row.items.name}</td>
+                  <td>${Number(row.items.purchase_cost / 100).toFixed(2)}</td>
                   <td>${Number(row.items.list_price / 100).toFixed(2)}</td>
                   <td>
                     <Modal

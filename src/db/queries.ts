@@ -33,6 +33,16 @@ export async function selectItems() {
   }
 }
 
+export async function selectItem(id: number) {
+  try {
+    const row = await db.select().from(items).where(eq(items.id, id));
+    return row[0];
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 /**
  * Selects all sale rows and related item rows
  * @returns
@@ -55,11 +65,29 @@ export async function selectSales() {
  * @param item
  * @returns
  */
-export async function insertItem(item: { name: string; list_price: number }) {
+export async function insertItem(item: {
+  name: string;
+  purchase_cost: number;
+  list_price: number;
+  item_desc: string;
+}) {
   try {
-    await db
-      .insert(items)
-      .values({ name: item.name, list_price: item.list_price });
+    await db.insert(items).values({
+      name: item.name,
+      purchase_cost: item.purchase_cost,
+      list_price: item.list_price,
+      item_desc: item.item_desc,
+    });
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+export async function deleteItem(id: number) {
+  try {
+    await db.delete(items).where(eq(items.id, id));
     return true;
   } catch (error) {
     console.error(error);

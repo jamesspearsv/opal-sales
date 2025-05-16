@@ -5,11 +5,14 @@ import {
   insertItem,
   insertSale,
   selectSales,
+  selectItem,
+  deleteItem,
 } from './db/queries.js';
 import HomeView from './ui/views/HomeView.js';
 import SalesView from './ui/views/SalesView.js';
 import type { Item, Sale } from './lib/types.js';
 import { parseDateInt } from './lib/helpers.js';
+import { db } from './db/schema.js';
 
 export const router = new Hono();
 
@@ -20,59 +23,104 @@ router.get('/seed', async (c) => {
   return c.text('Unable to seed database...');
 });
 
-router
-  .get('/', async (c) => {
-    const rows = await selectItems();
-    // console.log('items:', items);
-    return c.render(<HomeView rows={rows || []} />);
-  })
-  .post(async (c) => {
-    const data = await c.req.formData();
+// TODO: Move to /items
+router.get('/', async (c) => {
+  const rows = await selectItems();
+  // console.log('items:', items);
+  return c.render(<HomeView rows={rows || []} />);
+});
 
-    const name = data.get('name') as string;
-    const list_price = data.get('list_price') as string;
+router.post('/', async (c) => {
+  const data = await c.req.formData();
 
-    const price_int =
-      parseInt(list_price.split('.')[0]) * 100 +
-      parseInt(list_price.split('.')[1]);
+  const name = data.get('name') as string;
+  const list_price = data.get('list_price') as string;
+  const purchase_cost = data.get('purchase_cost') as string;
 
-    const result = await insertItem({
-      name,
-      list_price: price_int,
-    });
-    if (!result) return c.redirect('/?error=true');
+  const cost_int =
+    parseInt(purchase_cost.split('.')[0]) * 100 +
+    parseInt(purchase_cost.split('.')[1]);
 
-    return c.redirect('/');
+  const price_int =
+    parseInt(list_price.split('.')[0]) * 100 +
+    parseInt(list_price.split('.')[1]);
+
+  const result = await insertItem({
+    name,
+    purchase_cost: cost_int,
+    list_price: price_int,
+    item_desc: '',
+  });
+  if (!result) return c.redirect('/?error=true');
+
+  return c.redirect('/');
+});
+
+router.get('/sales', async (c) => {
+  const rows = await selectSales();
+  return c.render(<SalesView rows={rows as { sales: Sale; items: Item }[]} />);
+});
+
+router.post('/sales', async (c) => {
+  const data = await c.req.formData();
+  console.log(data);
+  const item_id = data.get('item_id') as string;
+  const sale_price = data.get('sale_price') as string;
+  const sale_date = data.get('sale_date') as string;
+
+  const amount_int =
+    parseInt(sale_price.split('.')[0]) * 100 +
+    parseInt(sale_price.split('.')[1]);
+
+  const date_int = parseDateInt(sale_date);
+  console.log(date_int);
+
+  const result = await insertSale({
+    item_id: parseInt(item_id),
+    sale_price: amount_int,
+    sale_date: date_int,
   });
 
-router
-  .get('/sales', async (c) => {
-    const rows = await selectSales();
-    return c.render(
-      <SalesView rows={rows as { sales: Sale; items: Item }[]} />
-    );
-  })
-  .post('/sales', async (c) => {
-    const data = await c.req.formData();
-    console.log(data);
-    const item_id = data.get('item_id') as string;
-    const sale_price = data.get('sale_price') as string;
-    const sale_date = data.get('sale_date') as string;
+  if (!result) return c.redirect('/?error=true');
 
-    const amount_int =
-      parseInt(sale_price.split('.')[0]) * 100 +
-      parseInt(sale_price.split('.')[1]);
+  return c.redirect('/');
+});
 
-    const date_int = parseDateInt(sale_date);
-    console.log(date_int);
+router.post('/bundle', async (c) => {
+  const data = await c.req.formData();
+  const items = data.get('items') as string;
+  const itemsList = items.split(',');
 
-    const result = await insertSale({
-      item_id: parseInt(item_id),
-      sale_price: amount_int,
-      sale_date: date_int,
-    });
-
-    if (!result) return c.redirect('/?error=true');
-
-    return c.redirect('/');
+  const queries = itemsList.map((id) => selectItem(parseInt(id)));
+  const results = await Promise.all(queries);
+  const totalListPrice = results.reduce((a, item) => {
+    if (item) {
+      return a + item.list_price;
+    } else return 0;
+  }, 0);
+  let newDesc = 'Items in bundle:\n';
+  results.forEach((item) => {
+    if (item) {
+      newDesc = newDesc + `- ${item.name}\n`;
+    }
   });
+
+  const totalPurchaseCost = results.reduce((a, item) => {
+    if (item) {
+      return a + item.purchase_cost;
+    } else return 0;
+  }, 0);
+
+  const insertResult = await insertItem({
+    name: `Item Bundle`,
+    purchase_cost: totalPurchaseCost,
+    list_price: totalListPrice,
+    item_desc: newDesc,
+  });
+
+  // TODO: Delete all provided items
+  const deleteQueries = itemsList.map((id) => deleteItem(parseInt(id)));
+  await Promise.all(deleteQueries);
+
+  if (insertResult) return c.redirect('/');
+});
