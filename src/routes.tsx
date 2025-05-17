@@ -11,7 +11,7 @@ import {
 import HomeView from './ui/views/HomeView.js';
 import SalesView from './ui/views/SalesView.js';
 import type { Item, Sale } from './lib/types.js';
-import { parseDateInt } from './lib/helpers.js';
+import { parseCents, parseDateInt } from './lib/parsing.js';
 import { db } from './db/schema.js';
 
 export const router = new Hono();
@@ -37,13 +37,8 @@ router.post('/', async (c) => {
   const list_price = data.get('list_price') as string;
   const purchase_cost = data.get('purchase_cost') as string;
 
-  const cost_int =
-    parseInt(purchase_cost.split('.')[0]) * 100 +
-    parseInt(purchase_cost.split('.')[1]);
-
-  const price_int =
-    parseInt(list_price.split('.')[0]) * 100 +
-    parseInt(list_price.split('.')[1]);
+  const cost_int = parseCents(purchase_cost);
+  const price_int = parseCents(list_price);
 
   const result = await insertItem({
     name,
@@ -68,12 +63,8 @@ router.post('/sales', async (c) => {
   const sale_price = data.get('sale_price') as string;
   const sale_date = data.get('sale_date') as string;
 
-  const amount_int =
-    parseInt(sale_price.split('.')[0]) * 100 +
-    parseInt(sale_price.split('.')[1]);
-
+  const amount_int = parseCents(sale_price);
   const date_int = parseDateInt(sale_date);
-  console.log(date_int);
 
   const result = await insertSale({
     item_id: parseInt(item_id),

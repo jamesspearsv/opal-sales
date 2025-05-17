@@ -13,3 +13,7 @@ export function parseDateString(dateInt: number) {
   }
   return dateString + 'T12:00:00-05:00';
 }
+
+export function parseCents(amount: string) {
+  return parseInt(amount.split('.')[0]) * 100 + parseInt(amount.split('.')[1]);
+}
