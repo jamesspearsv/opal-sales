@@ -1,9 +1,19 @@
+/**
+ * Parse a date integer from a date string in YYYY-MM-DD format
+ * @param dateString
+ * @returns
+ */
 export function parseDateInt(dateString: string) {
   const date = dateString.split('-');
   const dateInt = parseInt(`${date[0]}${date[1]}${date[2]}`);
   return dateInt;
 }
 
+/**
+ * Parse a date in YYYY-MM-DD format from a formatted date integer
+ * @param dateInt
+ * @returns
+ */
 export function parseDateString(dateInt: number) {
   const string = String(dateInt);
   let dateString = '';
@@ -14,6 +24,11 @@ export function parseDateString(dateInt: number) {
   return dateString + 'T12:00:00-05:00';
 }
 
+/**
+ * Parse the total number of cents from a formatted price string
+ * @param amount
+ * @returns
+ */
 export function parseCents(amount: string) {
   return parseInt(amount.split('.')[0]) * 100 + parseInt(amount.split('.')[1]);
 }

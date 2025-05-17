@@ -26,7 +26,6 @@ router.get('/seed', async (c) => {
 // TODO: Move to /items
 router.get('/', async (c) => {
   const rows = await selectItems();
-  // console.log('items:', items);
   return c.render(<HomeView rows={rows || []} />);
 });
 
@@ -58,7 +57,6 @@ router.get('/sales', async (c) => {
 
 router.post('/sales', async (c) => {
   const data = await c.req.formData();
-  console.log(data);
   const item_id = data.get('item_id') as string;
   const sale_price = data.get('sale_price') as string;
   const sale_date = data.get('sale_date') as string;
@@ -89,10 +87,12 @@ router.post('/bundle', async (c) => {
       return a + item.list_price;
     } else return 0;
   }, 0);
-  let newDesc = 'Items in bundle:\n';
-  results.forEach((item) => {
-    if (item) {
-      newDesc = newDesc + `- ${item.name}\n`;
+  let newDesc = 'Items in bundle:';
+  results.forEach((item, index) => {
+    if (item && index < results.length - 1) {
+      newDesc = newDesc + `${item.name}, `;
+    } else if (item) {
+      newDesc = newDesc + ` and ${item.name}`;
     }
   });
 
