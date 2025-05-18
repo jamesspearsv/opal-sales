@@ -13,8 +13,8 @@ services:
   caddy:
     image: caddy:latest
     restart: unless-stopped
+    env_file: .prod.env
     ports:
-      - '5180:80'
       - '5143:443'
       - '5143:443/udp'
     volumes:
