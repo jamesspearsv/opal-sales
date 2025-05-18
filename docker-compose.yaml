@@ -15,8 +15,7 @@ services:
     restart: unless-stopped
     env_file: .prod.env
     ports:
-      - '5143:443'
-      - '5143:443/udp'
+      - '5180:80'
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./site:/srv

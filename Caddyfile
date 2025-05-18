@@ -1,3 +1,7 @@
-{$SITE_DOMAIN} {
+{
+	auto_https off
+}
+
+{$SITE_DOMAIN}:80 {
 	reverse_proxy app:3000
 }
