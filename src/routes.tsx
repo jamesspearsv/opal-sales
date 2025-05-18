@@ -12,7 +12,6 @@ import HomeView from './ui/views/HomeView.js';
 import SalesView from './ui/views/SalesView.js';
 import type { Item, Sale } from './lib/types.js';
 import { parseCents, parseDateInt } from './lib/parsing.js';
-import { db } from './db/schema.js';
 
 export const router = new Hono();
 

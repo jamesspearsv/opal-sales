@@ -1,4 +1,4 @@
-import type { Item, Sale } from '@/lib/types.js';
+import type { Item, Sale } from '../../lib/types.js';
 import Modal from '../components/Modal.js';
 import NewItem from '../forms/AddItem.js';
 import AddSale from '../forms/AddSale.js';

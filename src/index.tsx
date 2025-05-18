@@ -12,7 +12,7 @@ export const app = new Hono();
 app.use(logger());
 app.use(jsxRenderer(({ children }) => <Layout>{children}</Layout>));
 app.use(
-  '/public/*',
+  '/static/*',
   serveStatic({
     root: './',
     onNotFound(path, c) {

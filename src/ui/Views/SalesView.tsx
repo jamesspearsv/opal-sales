@@ -1,6 +1,6 @@
 import { parseDateString } from '../../lib/parsing.js';
-import type { Item, Sale } from '@/lib/types.js';
 import type { PropsWithChildren } from 'hono/jsx';
+import type { Item, Sale } from '../../lib/types.js';
 
 interface SalesViewProps extends PropsWithChildren {
   rows: {

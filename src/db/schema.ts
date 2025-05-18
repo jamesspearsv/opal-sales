@@ -1,9 +1,16 @@
-import 'dotenv/config';
-import { sqliteTable, int, text, foreignKey } from 'drizzle-orm/sqlite-core';
+import * as dotenv from 'dotenv';
+import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 import { drizzle } from 'drizzle-orm/libsql/node';
 
+dotenv.config({ path: `${process.cwd()}/.dev.env` });
+
 /** Database connection */
-export const db = drizzle(process.env.DATABASE_URL!);
+export const db = drizzle({
+  connection: {
+    url: process.env.DATABASE_URL!,
+    authToken: process.env.DATABASE_AUTH_TOKEN!,
+  },
+});
 
 /** Items sqlite table */
 export const items = sqliteTable('items', {
