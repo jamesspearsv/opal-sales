@@ -38,3 +38,8 @@ button.btn {
 .hidden {
   display: none;
 }
+
+thead {
+  position: sticky !important;
+  top: 0 !important;
+}
