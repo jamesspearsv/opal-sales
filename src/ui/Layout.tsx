@@ -11,7 +11,10 @@ export default function Layout(props: PropsWithChildren) {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.jade.min.css"
         ></link>
-        <script src="//unpkg.com/alpinejs" defer></script>
+        <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
+        ></script>
         <link rel="stylesheet" href="/static/styles.css" />
         <title>Opal Store + Hono</title>
       </head>

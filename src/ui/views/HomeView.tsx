@@ -15,7 +15,7 @@ export default function HomeView(props: HomeProps) {
     <section x-data="{selected: []}">
       <div class="flex-horizontal">
         <h1>Items</h1>
-        <Modal label="New Item">
+        <Modal label="New Item" ref="newItem">
           <NewItem />
         </Modal>
         <template x-if="selected.length > 1">
@@ -69,6 +69,7 @@ export default function HomeView(props: HomeProps) {
                     <Modal
                       label={!!row.sales ? 'Sold' : 'Record Sale'}
                       disabled={!!row.sales}
+                      ref={`item${row.items.id.toString()}`}
                     >
                       <AddSale item_id={row.items.id} />
                     </Modal>
