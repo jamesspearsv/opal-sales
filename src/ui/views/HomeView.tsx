@@ -40,7 +40,6 @@ export default function HomeView(props: HomeProps) {
       >
         <thead>
           <th></th>
-          <th>id</th>
           <th>name</th>
           <th>purchase_cost</th>
           <th>list_price</th>
@@ -63,7 +62,6 @@ export default function HomeView(props: HomeProps) {
                       }"
                     />
                   </td>
-                  <td>{row.items.id}</td>
                   <td>{row.items.name}</td>
                   <td>${Number(row.items.purchase_cost / 100).toFixed(2)}</td>
                   <td>${Number(row.items.list_price / 100).toFixed(2)}</td>

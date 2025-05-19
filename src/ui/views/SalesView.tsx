@@ -15,10 +15,7 @@ export default function SalesView(props: SalesViewProps) {
       <h1>All Sales</h1>
       <table>
         <thead>
-          <th>id</th>
           <th>item</th>
-          <th>purchase_cost</th>
-          <th>list_price</th>
           <th>sale_price</th>
           <th>+/-</th>
           <th>sale_date</th>
@@ -26,10 +23,7 @@ export default function SalesView(props: SalesViewProps) {
         <tbody>
           {props.rows.map((row) => (
             <tr>
-              <td>{row.sales.id}</td>
               <td>{row.items.name}</td>
-              <td>${Number(row.items.purchase_cost / 100).toFixed(2)}</td>
-              <td>${Number(row.items.list_price / 100).toFixed(2)}</td>
               <td>${Number(row.sales.sale_price / 100).toFixed(2)}</td>
               <td>
                 {Number(
