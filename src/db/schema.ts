@@ -1,15 +1,13 @@
-import * as dotenv from 'dotenv';
+import 'dotenv/config';
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 import { drizzle } from 'drizzle-orm/libsql/node';
 import { sql } from 'drizzle-orm';
 
-dotenv.config({ path: `${process.cwd()}/.dev.env` });
-
 /** Database connection */
 export const db = drizzle({
   connection: {
-    url: process.env.DATABASE_URL!,
-    authToken: process.env.DATABASE_AUTH_TOKEN!,
+    url: process.env.PROD ? process.env.DATABASE_URL! : 'file:dev.sqlite',
+    authToken: process.env.PROD ? process.env.DATABASE_AUTH_TOKEN! : undefined,
   },
 });
 

@@ -1,13 +1,18 @@
-import * as dotenv from 'dotenv';
+import 'dotenv/config';
 import { defineConfig } from 'drizzle-kit';
-
-dotenv.config({ path: `${process.cwd()}/.dev.env` });
 
 export default defineConfig({
   out: './drizzle',
   schema: './src/db/schema.ts',
-  dialect: 'sqlite',
-  dbCredentials: {
-    url: process.env.DATABASE_URL!,
-  },
+  dialect: process.env.PROD ? 'turso' : 'sqlite',
+  dbCredentials: process.env.PROD
+    ? {
+        url: process.env.PROD ? process.env.DATABASE_URL! : 'file:dev.sqlite',
+        authToken: process.env.PROD
+          ? process.env.DATABASE_AUTH_TOKEN!
+          : undefined,
+      }
+    : {
+        url: 'file:dev.sqlite',
+      },
 });

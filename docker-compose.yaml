@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     expose:
       - '3000'
-    env_file: .prod.env # MAKE SURE THIS FILE EXISTS
+    env_file: .env # MAKE SURE THIS FILE EXISTS
     restart: unless-stopped
     networks:
       - opal-network
@@ -13,7 +13,6 @@ services:
   caddy:
     image: caddy:latest
     restart: unless-stopped
-    env_file: .prod.env
     ports:
       - '5180:80'
     volumes:
