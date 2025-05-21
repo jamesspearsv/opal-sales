@@ -8,12 +8,31 @@ import {
   selectItem,
   deleteItem,
 } from './db/queries.js';
-import HomeView from './ui/views/HomeView.js';
+import ItemsView from './ui/views/ItemsView.js';
 import SalesView from './ui/views/SalesView.js';
 import type { Item, Sale } from './lib/types.js';
 import { parseCents, parseDateInt } from './lib/parsing.js';
 
+export const routes = {
+  Items: '/items',
+  Sales: '/sales',
+  Home: '/',
+  Bundle: '/bundle',
+};
+
 export const router = new Hono();
+router.get(routes.Home, async (c) => {
+  const date = new Date();
+  const year = date.getFullYear;
+  const month = date.getMonth() + 1;
+
+  const startDate = parseInt(`${year}${month}01`);
+
+  const endDate = parseInt(`${year}${month}`);
+
+  const sales = await selectSales(startDate, endDate);
+  return c.json(sales);
+});
 
 // TODO: Add basic form validation
 router.get('/seed', async (c) => {
@@ -22,13 +41,12 @@ router.get('/seed', async (c) => {
   return c.text('Unable to seed database...');
 });
 
-// TODO: Move to /items
-router.get('/', async (c) => {
+router.get(routes.Items, async (c) => {
   const rows = await selectItems();
-  return c.render(<HomeView rows={rows || []} />);
+  return c.render(<ItemsView rows={rows || []} />);
 });
 
-router.post('/', async (c) => {
+router.post(routes.Items, async (c) => {
   const data = await c.req.formData();
 
   const name = data.get('name') as string;
@@ -46,15 +64,15 @@ router.post('/', async (c) => {
   });
   if (!result) return c.redirect('/?error=true');
 
-  return c.redirect('/');
+  return c.redirect(routes.Items);
 });
 
-router.get('/sales', async (c) => {
+router.get(routes.Sales, async (c) => {
   const rows = await selectSales();
   return c.render(<SalesView rows={rows as { sales: Sale; items: Item }[]} />);
 });
 
-router.post('/sales', async (c) => {
+router.post(routes.Sales, async (c) => {
   const data = await c.req.formData();
   const item_id = data.get('item_id') as string;
   const sale_price = data.get('sale_price') as string;
@@ -69,12 +87,12 @@ router.post('/sales', async (c) => {
     sale_date: date_int,
   });
 
-  if (!result) return c.redirect('/?error=true');
+  if (!result) return c.redirect(routes.Items + '?error=true');
 
-  return c.redirect('/');
+  return c.redirect(routes.Items);
 });
 
-router.post('/bundle', async (c) => {
+router.post(routes.Bundle, async (c) => {
   const data = await c.req.formData();
   const items = data.get('items') as string;
   const itemsList = items.split(',');
@@ -112,5 +130,5 @@ router.post('/bundle', async (c) => {
   const deleteQueries = itemsList.map((id) => deleteItem(parseInt(id)));
   await Promise.all(deleteQueries);
 
-  if (insertResult) return c.redirect('/');
+  if (insertResult) return c.redirect(routes.Items);
 });

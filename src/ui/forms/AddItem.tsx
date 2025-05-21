@@ -1,6 +1,6 @@
 export default function NewItem() {
   return (
-    <form action="/" method="post">
+    <form action="/item" method="post">
       <fieldset>
         <label htmlFor="name">Item Name</label>
         <input type="text" name="name" required />

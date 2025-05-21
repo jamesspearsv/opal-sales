@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, gte, lt, lte } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 import { db, items, sales } from './schema.js';
 
@@ -47,12 +47,18 @@ export async function selectItem(id: number) {
  * Selects all sale rows and related item rows
  * @returns
  */
-export async function selectSales() {
+export async function selectSales(start?: number, end?: number) {
   try {
     const rows = await db
       .select()
       .from(sales)
-      .leftJoin(items, eq(items.id, sales.item_id));
+      .leftJoin(items, eq(items.id, sales.item_id))
+      .where(
+        and(
+          start ? gte(sales.sale_date, start) : undefined,
+          end ? lt(sales.sale_date, end) : undefined
+        )
+      );
     return rows;
   } catch (error) {
     console.error(error);

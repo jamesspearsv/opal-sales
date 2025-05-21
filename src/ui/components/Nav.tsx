@@ -1,3 +1,5 @@
+import { routes } from '../../routes.js';
+
 export default function Nav() {
   return (
     <nav class={'nav'}>
@@ -6,10 +8,13 @@ export default function Nav() {
       </ul>
       <ul>
         <li>
-          <a href="/">Items</a>
+          <a href={routes.Home}>Home</a>
         </li>
         <li>
-          <a href="/sales">Sales</a>
+          <a href={routes.Items}>Items</a>
+        </li>
+        <li>
+          <a href={routes.Sales}>Sales</a>
         </li>
       </ul>
     </nav>
