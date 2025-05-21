@@ -21,7 +21,7 @@ export function parseDateString(dateInt: number) {
     if (i === 4 || i === 6) dateString = dateString + '-';
     dateString = dateString + string[i];
   }
-  return dateString + 'T12:00:00-05:00';
+  return dateString + ' ' + '16:00:00.000Z';
 }
 
 /**

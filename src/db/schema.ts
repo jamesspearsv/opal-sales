@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 import { drizzle } from 'drizzle-orm/libsql/node';
+import { sql } from 'drizzle-orm';
 
 dotenv.config({ path: `${process.cwd()}/.dev.env` });
 
@@ -24,7 +25,9 @@ export const items = sqliteTable('items', {
 export const sales = sqliteTable('sales', {
   id: int().primaryKey({ autoIncrement: true }),
   sale_price: int().notNull(), // in total cents
-  sale_date: int().notNull(), // int representing YYYYMMDD format
+  sale_date: text()
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`), // date string in ISO format
   item_id: int()
     .references(() => items.id, { onDelete: 'no action' })
     .notNull(),

@@ -30,7 +30,7 @@ export default function SalesView(props: SalesViewProps) {
                   (row.sales.sale_price - row.items.purchase_cost) / 100
                 ).toFixed(2)}
               </td>
-              <td>{parseDateString(row.sales.sale_date)}</td>
+              <td>{row.sales.sale_date}</td>
             </tr>
           ))}
         </tbody>

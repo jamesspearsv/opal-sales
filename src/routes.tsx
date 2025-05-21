@@ -21,6 +21,17 @@ export const routes = {
 };
 
 export const router = new Hono();
+
+// router.get('/migrate', async (c) => {
+//   const sales = await migrateDates();
+//   sales.forEach((sale) => {
+//     const newDate = parseDateString(sale.sale_date as number);
+
+//     (async () => await updateDate(sale.id, newDate))();
+//   });
+//   return c.json(sales);
+// });
+
 router.get(routes.Home, async (c) => {
   const date = new Date();
   const year = date.getFullYear;
@@ -30,7 +41,7 @@ router.get(routes.Home, async (c) => {
 
   const endDate = parseInt(`${year}${month}`);
 
-  const sales = await selectSales(startDate, endDate);
+  const sales = await selectSales();
   return c.json(sales);
 });
 
@@ -77,14 +88,14 @@ router.post(routes.Sales, async (c) => {
   const item_id = data.get('item_id') as string;
   const sale_price = data.get('sale_price') as string;
   const sale_date = data.get('sale_date') as string;
+  const parsed_date = new Date(sale_date).toISOString().replace('T', ' ');
 
   const amount_int = parseCents(sale_price);
-  const date_int = parseDateInt(sale_date);
 
   const result = await insertSale({
     item_id: parseInt(item_id),
     sale_price: amount_int,
-    sale_date: date_int,
+    sale_date: parsed_date,
   });
 
   if (!result) return c.redirect(routes.Items + '?error=true');

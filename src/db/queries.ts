@@ -16,6 +16,15 @@ export async function seedDatabase() {
   }
 }
 
+// export async function migrateDates() {
+//   const rows = await db.select().from(sales);
+//   return rows;
+// }
+
+// export async function updateDate(id: number, date: string) {
+//   await db.update(sales).set({ sale_date: 'NULL' }).where(eq(sales.id, id));
+// }
+
 /**
  * Selects all item rows and their related sale rows
  * @returns
@@ -47,18 +56,12 @@ export async function selectItem(id: number) {
  * Selects all sale rows and related item rows
  * @returns
  */
-export async function selectSales(start?: number, end?: number) {
+export async function selectSales() {
   try {
     const rows = await db
       .select()
       .from(sales)
-      .leftJoin(items, eq(items.id, sales.item_id))
-      .where(
-        and(
-          start ? gte(sales.sale_date, start) : undefined,
-          end ? lt(sales.sale_date, end) : undefined
-        )
-      );
+      .leftJoin(items, eq(items.id, sales.item_id));
     return rows;
   } catch (error) {
     console.error(error);
@@ -108,8 +111,8 @@ export async function deleteItem(id: number) {
  */
 export async function insertSale(sale: {
   sale_price: number;
-  sale_date: number;
   item_id: number;
+  sale_date: string;
 }) {
   try {
     await db.insert(sales).values({
