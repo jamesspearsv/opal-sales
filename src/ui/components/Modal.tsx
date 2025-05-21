@@ -20,7 +20,7 @@ export default function Modal(props: ModalProps) {
       ) : (
         <button disabled={props.disabled}>{props.label}</button>
       )}
-      <dialog x-ref={props.ref}>
+      <dialog x-ref={`${props.ref}`}>
         <article class={'new-item-modal'}>
           <div>{props.children}</div>
           <button x-on:click="closed = true" class="btn">

@@ -24,9 +24,6 @@ export default function HomeView(props: HomeProps) {
             <input type="submit" value="Make a bundle" style="margin:0;" />
           </form>
         </template>
-        <template x-if="selected.length > 1">
-          <button>Cancel</button>
-        </template>
       </div>
       <table
         x-on:select="() => {
@@ -60,6 +57,7 @@ export default function HomeView(props: HomeProps) {
                        } else {
                         $dispatch('remove', {id: $event.currentTarget.value})}
                       }"
+                      x-ref="checkbox"
                     />
                   </td>
                   <td>{row.items.name}</td>
