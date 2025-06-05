@@ -3,14 +3,6 @@ import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 import { drizzle } from 'drizzle-orm/libsql/node';
 import { sql } from 'drizzle-orm';
 
-/** Database connection */
-export const db = drizzle({
-  connection: {
-    url: process.env.PROD ? process.env.DATABASE_URL! : 'file:dev.sqlite',
-    authToken: process.env.PROD ? process.env.DATABASE_AUTH_TOKEN! : undefined,
-  },
-});
-
 /** Items sqlite table */
 export const items = sqliteTable('items', {
   id: int().primaryKey({ autoIncrement: true }),

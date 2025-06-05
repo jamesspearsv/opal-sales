@@ -5,8 +5,7 @@
     "dev": "tsx watch src/index.tsx",
     "build": "tsc",
     "start": "node dist/src/index.js",
-    "drizzle:kit": "pnpm drizzle-kit",
-    "drizzle:publish": "pnpm exec drizzle-kit push --config=drizzle-prod.config.ts"
+    "drizzle:push": "pnpm drizzle-kit"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.1",

@@ -7,10 +7,8 @@ export default defineConfig({
   dialect: process.env.PROD ? 'turso' : 'sqlite',
   dbCredentials: process.env.PROD
     ? {
-        url: process.env.PROD ? process.env.DATABASE_URL! : 'file:dev.sqlite',
-        authToken: process.env.PROD
-          ? process.env.DATABASE_AUTH_TOKEN!
-          : undefined,
+        url: process.env.DATABASE_URL!,
+        authToken: process.env.DATABASE_AUTH_TOKEN!,
       }
     : {
         url: 'file:dev.sqlite',

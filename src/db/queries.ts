@@ -1,6 +1,7 @@
-import { and, eq, gte, lt, lte } from 'drizzle-orm';
+import { db } from './connection.js';
+import { eq } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
-import { db, items, sales } from './schema.js';
+import { items, sales } from './schema.js';
 
 /**
  * Seeds an empty database with test items
