@@ -1,6 +1,8 @@
 import { drizzle } from 'drizzle-orm/libsql';
 import 'dotenv/config';
 
+console.log(process.env);
+
 if (process.env.NODE_ENV === 'prod')
   console.log('---> Running in production mode');
 else console.log(' ---> Running in development mode');

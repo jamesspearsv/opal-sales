@@ -2,9 +2,9 @@
   "name": "opal-sales",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.tsx",
+    "dev": "NODE_ENV=dev tsx watch src/index.tsx",
     "build": "tsc",
-    "start": "node dist/src/index.js",
+    "start": "NODE_ENV=prod node dist/src/index.js",
     "drizzle:push": "pnpm drizzle-kit"
   },
   "dependencies": {
