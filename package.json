@@ -2,10 +2,13 @@
   "name": "opal-sales",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=dev tsx watch src/index.tsx",
+    "dev": "tsx watch src/index.tsx",
     "build": "tsc",
-    "start": "NODE_ENV=prod node dist/src/index.js",
-    "drizzle:push": "pnpm drizzle-kit"
+    "start": "PROD=true node dist/src/index.js",
+    "drizzle:generate": "pnpm drizzle-kit generate",
+    "drizzle:migrate": "PROD=true pnpm drizzle-kit migrate",
+    "drizzle:pull": "PROD=true pnpm drizzle-kit pull",
+    "drizzle:push": "pnpm drizzle-kit push"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.1",

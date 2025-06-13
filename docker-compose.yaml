@@ -5,30 +5,7 @@ services:
       dockerfile: Dockerfile
     expose:
       - '3000'
+    environment:
+      - PROD=true
     env_file: .env # MAKE SURE THIS FILE EXISTS
     restart: unless-stopped
-    networks:
-      - opal-network
-
-  caddy:
-    image: caddy:latest
-    restart: unless-stopped
-    ports:
-      - '5180:80'
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./site:/srv
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - app
-    networks:
-      - opal-network
-
-volumes:
-  caddy_data:
-  caddy_config:
-
-networks:
-  opal-network:
-    driver: bridge

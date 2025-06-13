@@ -28,4 +28,6 @@ COPY --chown=hono:nodejs static /app/static
 USER hono
 EXPOSE 3000
 
+ENV PROD=true
+
 CMD ["node", "/app/dist/index.js"]
