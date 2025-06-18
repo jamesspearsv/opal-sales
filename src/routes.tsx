@@ -11,7 +11,7 @@ import {
 import ItemsView from './ui/views/ItemsView.js';
 import SalesView from './ui/views/SalesView.js';
 import type { Item, Sale } from './lib/types.js';
-import { parseCents, parseDateInt } from './lib/parsing.js';
+import { parseCents } from './lib/parsing.js';
 
 export const routes = {
   Items: '/items',
@@ -20,7 +20,7 @@ export const routes = {
   Bundle: '/bundle',
 };
 
-export const router = new Hono();
+export const api = new Hono();
 
 // router.get('/migrate', async (c) => {
 //   const sales = await migrateDates();
@@ -32,7 +32,7 @@ export const router = new Hono();
 //   return c.json(sales);
 // });
 
-router.get(routes.Home, async (c) => {
+api.get(routes.Home, async (c) => {
   const date = new Date();
   const year = date.getFullYear;
   const month = date.getMonth() + 1;
@@ -46,18 +46,18 @@ router.get(routes.Home, async (c) => {
 });
 
 // TODO: Add basic form validation
-router.get('/seed', async (c) => {
+api.get('/seed', async (c) => {
   const result = await seedDatabase();
   if (result) return c.text('Database seeded!');
   return c.text('Unable to seed database...');
 });
 
-router.get(routes.Items, async (c) => {
+api.get(routes.Items, async (c) => {
   const rows = await selectItems();
   return c.render(<ItemsView rows={rows || []} />);
 });
 
-router.post(routes.Items, async (c) => {
+api.post(routes.Items, async (c) => {
   const data = await c.req.formData();
 
   const name = data.get('name') as string;
@@ -78,12 +78,12 @@ router.post(routes.Items, async (c) => {
   return c.redirect(routes.Items);
 });
 
-router.get(routes.Sales, async (c) => {
+api.get(routes.Sales, async (c) => {
   const rows = await selectSales();
   return c.render(<SalesView rows={rows as { sales: Sale; items: Item }[]} />);
 });
 
-router.post(routes.Sales, async (c) => {
+api.post(routes.Sales, async (c) => {
   const data = await c.req.formData();
   const item_id = data.get('item_id') as string;
   const sale_price = data.get('sale_price') as string;
@@ -103,7 +103,7 @@ router.post(routes.Sales, async (c) => {
   return c.redirect(routes.Items);
 });
 
-router.post(routes.Bundle, async (c) => {
+api.post(routes.Bundle, async (c) => {
   const data = await c.req.formData();
   const items = data.get('items') as string;
   const itemsList = items.split(',');

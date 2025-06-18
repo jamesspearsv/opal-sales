@@ -8,13 +8,13 @@ export default function Nav() {
       </ul>
       <ul>
         <li>
-          <a href={routes.Home}>Home</a>
+          <a href="/">Home</a>
         </li>
         <li>
-          <a href={routes.Items}>Items</a>
+          <a href="/items">Items</a>
         </li>
         <li>
-          <a href={routes.Sales}>Sales</a>
+          <a href="/sales">Sales</a>
         </li>
       </ul>
     </nav>

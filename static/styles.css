@@ -43,3 +43,7 @@ thead {
   position: sticky !important;
   top: 0 !important;
 }
+
+[x-cloak] {
+  display: none !important;
+}

@@ -64,13 +64,13 @@ export default function HomeView(props: HomeProps) {
                   <td>${Number(row.items.purchase_cost / 100).toFixed(2)}</td>
                   <td>${Number(row.items.list_price / 100).toFixed(2)}</td>
                   <td>
-                    <Modal
+                    {/* <Modal
                       label={!!row.sales ? 'Sold' : 'Record Sale'}
                       disabled={!!row.sales}
                       ref={`item${row.items.id.toString()}`}
                     >
                       <AddSale item_id={row.items.id} />
-                    </Modal>
+                    </Modal> */}
                   </td>
                 </tr>
               )
