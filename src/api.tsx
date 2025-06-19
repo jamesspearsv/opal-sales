@@ -12,6 +12,7 @@ import ItemsView from './ui/views/ItemsView.js';
 import SalesView from './ui/views/SalesView.js';
 import type { Item, Sale } from './lib/types.js';
 import { parseCents } from './lib/parsing.js';
+import IndexView from './ui/views/IndexView.js';
 
 export const routes = {
   Items: '/items',
@@ -37,12 +38,8 @@ api.get(routes.Home, async (c) => {
   const year = date.getFullYear;
   const month = date.getMonth() + 1;
 
-  const startDate = parseInt(`${year}${month}01`);
-
-  const endDate = parseInt(`${year}${month}`);
-
   const sales = await selectSales();
-  return c.json(sales);
+  return c.render(<IndexView />);
 });
 
 // TODO: Add basic form validation

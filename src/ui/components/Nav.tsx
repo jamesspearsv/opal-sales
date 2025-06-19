@@ -1,4 +1,4 @@
-import { routes } from '../../routes.js';
+import { routes } from '../../api.js';
 
 export default function Nav() {
   return (

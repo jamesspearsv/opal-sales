@@ -12,7 +12,11 @@ export default function Layout(props: PropsWithChildren) {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.jade.min.css"
         ></link>
-        {/* Include Alpine.js */}
+        {/* Include Alpine.js & plugins*/}
+        <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.x.x/dist/cdn.min.js"
+        ></script>
         <script
           src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
           defer
@@ -21,10 +25,8 @@ export default function Layout(props: PropsWithChildren) {
         <title>Opal Store + Hono</title>
       </head>
       <body>
-        <div id="root">
-          <Nav />
-          <main class={'main'}>{props.children}</main>
-        </div>
+        <Nav />
+        <main class={'main'}>{props.children}</main>
       </body>
     </html>
   );

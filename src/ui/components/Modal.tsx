@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'hono/jsx';
+import type { KeyboardEvent, PropsWithChildren } from 'hono/jsx';
 
 interface ModalProps extends PropsWithChildren {
   label: string;
@@ -9,21 +9,18 @@ interface ModalProps extends PropsWithChildren {
 export default function Modal(props: ModalProps) {
   return (
     <div
-      x-data="{ closed: true }"
-      x-effect={`() => {
-          if (!closed) $refs.${props.ref}.showModal()
-          else $refs.${props.ref}.close()
-      }`}
+      x-data="{ open: false }"
+      {...{ 'x-on:keydown.escape': 'open = false' }}
     >
       {!props.disabled ? (
-        <button x-on:click="closed = false">{props.label}</button>
+        <button x-on:click="open = true">{props.label}</button>
       ) : (
         <button disabled={props.disabled}>{props.label}</button>
       )}
-      <dialog x-ref={`${props.ref}`}>
+      <dialog x-bind:open="open" x-cloak x-trap="open">
         <article class={'new-item-modal'}>
           <div>{props.children}</div>
-          <button x-on:click="closed = true" class="btn">
+          <button x-on:click="open = false" class="btn">
             Cancel
           </button>
         </article>

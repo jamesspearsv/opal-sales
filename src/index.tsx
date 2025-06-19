@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { jsxRenderer } from 'hono/jsx-renderer';
 import { serveStatic } from '@hono/node-server/serve-static';
 import Layout from './ui/Layout.js';
-import { api } from './routes.js';
+import { api } from './api.js';
 import { logger } from 'hono/logger';
 
 export const app = new Hono();
@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.route('', api);
+app.route('/', api);
 
 serve(
   {
