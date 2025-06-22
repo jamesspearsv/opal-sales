@@ -2,7 +2,6 @@ import type { KeyboardEvent, PropsWithChildren } from 'hono/jsx';
 
 interface ModalProps extends PropsWithChildren {
   label: string;
-  ref: string;
   disabled?: boolean;
 }
 

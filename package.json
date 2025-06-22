@@ -1,28 +1,11 @@
 {
   "name": "opal-sales",
-  "type": "module",
+  "version": "0.0.0",
+  "description": "",
   "scripts": {
-    "dev": "tsx watch src/index.tsx",
-    "build": "tsc",
-    "start": "PROD=true node dist/src/index.js",
-    "drizzle:generate": "pnpm drizzle-kit generate",
-    "drizzle:migrate": "PROD=true pnpm drizzle-kit migrate",
-    "drizzle:pull": "PROD=true pnpm drizzle-kit pull",
-    "drizzle:push": "pnpm drizzle-kit push"
+    "dev": "pnpm run -r --parallel --aggregate-output dev"
   },
-  "dependencies": {
-    "@hono/node-server": "^1.14.1",
-    "@libsql/client": "^0.15.6",
-    "dotenv": "^16.5.0",
-    "drizzle-orm": "^0.43.1",
-    "drizzle-seed": "^0.3.1",
-    "hono": "^4.7.9"
-  },
-  "devDependencies": {
-    "@hono/vite-dev-server": "^0.19.0",
-    "@types/node": "^20.11.17",
-    "drizzle-kit": "^0.31.1",
-    "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
-  }
+  "keywords": [],
+  "author": "James Spears, V",
+  "license": "ISC"
 }

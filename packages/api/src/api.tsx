@@ -10,8 +10,8 @@ import {
 } from './db/queries.js';
 import ItemsView from './ui/views/ItemsView.js';
 import SalesView from './ui/views/SalesView.js';
-import type { Item, Sale } from './lib/types.js';
-import { parseCents } from './lib/parsing.js';
+import type { Item, Sale } from '../../shared/src/types.js';
+import { parseCents } from '../../shared/src/lib.js';
 import IndexView from './ui/views/IndexView.js';
 
 export const routes = {

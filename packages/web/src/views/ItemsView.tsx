@@ -1,7 +1,6 @@
-import type { Item, Sale } from '../../lib/types.js';
-import Modal from '../components/Modal.js';
-import NewItem from '../forms/AddItem.js';
-import AddSale from '../forms/AddSale.js';
+import type { Item, Sale } from '@packages/shared';
+import Modal from '@web/components/Modal';
+import AddSale from '@web/forms/AddSale';
 
 interface HomeProps {
   rows: {
@@ -13,15 +12,12 @@ interface HomeProps {
 export default function HomeView(props: HomeProps) {
   return (
     <section x-data="{selected: []}">
-      <div class="flex-horizontal">
+      <div>
         <h1>Items</h1>
-        <Modal label="New Item" ref="newItem">
-          <NewItem />
-        </Modal>
         <template x-if="selected.length > 1">
           <form action="/bundle" method="post" x-ref="bundle-form">
             <input type="hidden" name="items" x-bind:value="selected" />
-            <input type="submit" value="Make a bundle" style="margin:0;" />
+            <input type="submit" value="Make a bundle" style={{ margin: 0 }} />
           </form>
         </template>
       </div>
@@ -64,13 +60,12 @@ export default function HomeView(props: HomeProps) {
                   <td>${Number(row.items.purchase_cost / 100).toFixed(2)}</td>
                   <td>${Number(row.items.list_price / 100).toFixed(2)}</td>
                   <td>
-                    {/* <Modal
-                      label={!!row.sales ? 'Sold' : 'Record Sale'}
+                    <Modal
+                      label={row.sales ? 'Sold' : 'Record Sale'}
                       disabled={!!row.sales}
-                      ref={`item${row.items.id.toString()}`}
                     >
                       <AddSale item_id={row.items.id} />
-                    </Modal> */}
+                    </Modal>
                   </td>
                 </tr>
               )

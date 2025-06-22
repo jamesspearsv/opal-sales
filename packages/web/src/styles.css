@@ -13,7 +13,7 @@ nav.nav {
   padding-inline: 2rem;
 }
 
-main.main {
+main {
   margin-inline: 4rem;
 }
 
@@ -42,17 +42,4 @@ button.btn {
 thead {
   position: sticky !important;
   top: 0 !important;
-}
-
-[x-cloak] {
-  display: none !important;
-}
-
-.popover {
-  position: fixed;
-  top: 1rem;
-  bottom: 1rem;
-  left: 1rem;
-  right: 1rem;
-  background-color: rebeccapurple;
 }

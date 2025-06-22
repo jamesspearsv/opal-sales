@@ -1,10 +1,8 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    expose:
-      - '3000'
+    image: ghcr.io/jamesspearsv/opal-sales:latest
+    ports:
+      - '3000:3000'
     environment:
       - PROD=true
     env_file: .env # MAKE SURE THIS FILE EXISTS
