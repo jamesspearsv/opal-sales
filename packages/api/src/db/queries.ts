@@ -3,8 +3,10 @@ import { eq } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 import { items, sales } from './schema.js';
 
+// TODO: Implement a result pattern for each query function
+
 /**
- * Seeds an empty database with test items
+ * * Seeds an empty database with test items
  * @returns
  */
 export async function seedDatabase() {
@@ -27,7 +29,7 @@ export async function seedDatabase() {
 // }
 
 /**
- * Selects all item rows and their related sale rows
+ * * Selects all item rows and their related sale rows
  * @returns
  */
 export async function selectItems() {

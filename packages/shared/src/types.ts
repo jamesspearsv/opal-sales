@@ -1,3 +1,4 @@
+/** DATA INTERFACES **/
 export interface Item {
   id: number;
   name: string;
@@ -11,4 +12,14 @@ export interface Sale {
   sale_price: number;
   sale_date: string;
   item_id: number;
+}
+
+// UTILITY TYPES
+// TODO: Update api response types
+export interface SuccessResponse<T> {
+  rows: T[];
+}
+
+export interface ErrorResponse {
+  message: string;
 }

@@ -8,6 +8,10 @@ import { logger } from 'hono/logger';
 
 export const app = new Hono();
 
+// TODO: Remove UI rendering logic
+
+// TODO: Implement api json responses
+
 /* APP MIDDLEWARE */
 app.use(logger());
 app.use(jsxRenderer(({ children }) => <Layout>{children}</Layout>));

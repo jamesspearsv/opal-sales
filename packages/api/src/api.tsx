@@ -10,9 +10,8 @@ import {
 } from './db/queries.js';
 import ItemsView from './ui/views/ItemsView.js';
 import SalesView from './ui/views/SalesView.js';
-import type { Item, Sale } from '../../shared/src/types.js';
 import { parseCents } from '../../shared/src/lib.js';
-import IndexView from './ui/views/IndexView.js';
+import type { SuccessResponse, Item, Sale } from '@packages/shared';
 
 export const routes = {
   Items: '/items',
@@ -23,26 +22,16 @@ export const routes = {
 
 export const api = new Hono();
 
-// router.get('/migrate', async (c) => {
-//   const sales = await migrateDates();
-//   sales.forEach((sale) => {
-//     const newDate = parseDateString(sale.sale_date as number);
-
-//     (async () => await updateDate(sale.id, newDate))();
-//   });
-//   return c.json(sales);
-// });
-
 api.get(routes.Home, async (c) => {
   const date = new Date();
   const year = date.getFullYear;
   const month = date.getMonth() + 1;
 
   const sales = await selectSales();
-  return c.render(<IndexView />);
+
+  return c.json({ rows: sales });
 });
 
-// TODO: Add basic form validation
 api.get('/seed', async (c) => {
   const result = await seedDatabase();
   if (result) return c.text('Database seeded!');
@@ -134,7 +123,6 @@ api.post(routes.Bundle, async (c) => {
     item_desc: newDesc,
   });
 
-  // TODO: Delete all provided items
   const deleteQueries = itemsList.map((id) => deleteItem(parseInt(id)));
   await Promise.all(deleteQueries);
 
