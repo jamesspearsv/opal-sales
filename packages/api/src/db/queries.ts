@@ -1,9 +1,8 @@
 import { db } from './connection.js';
-import { eq } from 'drizzle-orm';
+import { eq, isNull } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 import { items, sales } from './schema.js';
-
-// TODO: Implement a result pattern for each query function
+import type { Item, Result, Sale } from '@packages/shared';
 
 /**
  * * Seeds an empty database with test items
@@ -32,26 +31,36 @@ export async function seedDatabase() {
  * * Selects all item rows and their related sale rows
  * @returns
  */
-export async function selectItems() {
+export async function selectItems(): Promise<Result<Item[]>> {
   try {
     const rows = await db
-      .select()
+      .select({
+        id: items.id,
+        name: items.name,
+        purchase_cost: items.purchase_cost,
+        list_price: items.list_price,
+        item_desc: items.item_desc,
+        sale_date: sales.sale_date,
+        sale_id: sales.id,
+      })
       .from(items)
-      .leftJoin(sales, eq(sales.item_id, items.id));
-    return rows;
+      .leftJoin(sales, eq(sales.item_id, items.id))
+      .where(isNull(sales.sale_date));
+    return { success: true, data: rows };
   } catch (error) {
     console.error(error);
-    return false;
+    return { success: false, message: 'Unable to select items' };
   }
 }
 
-export async function selectItem(id: number) {
+export async function selectItem(id: number): Promise<Result<Item>> {
   try {
     const row = await db.select().from(items).where(eq(items.id, id));
-    return row[0];
+    return { success: true, data: row[0] };
   } catch (error) {
     console.log(error);
-    return false;
+    console.error(error);
+    return { success: false, message: 'Unable to select item' };
   }
 }
 
@@ -59,16 +68,22 @@ export async function selectItem(id: number) {
  * Selects all sale rows and related item rows
  * @returns
  */
-export async function selectSales() {
+export async function selectSales(): Promise<Result<Sale[]>> {
   try {
     const rows = await db
-      .select()
+      .select({
+        id: sales.id,
+        sale_price: sales.sale_price,
+        sale_date: sales.sale_date,
+        item_id: sales.item_id,
+        purchase_cost: items.purchase_cost,
+      })
       .from(sales)
       .leftJoin(items, eq(items.id, sales.item_id));
-    return rows;
+    return { success: true, data: rows };
   } catch (error) {
     console.error(error);
-    return false;
+    return { success: false, message: 'Unable to select sales' };
   }
 }
 
@@ -82,7 +97,7 @@ export async function insertItem(item: {
   purchase_cost: number;
   list_price: number;
   item_desc: string;
-}) {
+}): Promise<Result<string>> {
   try {
     await db.insert(items).values({
       name: item.name,
@@ -90,20 +105,20 @@ export async function insertItem(item: {
       list_price: item.list_price,
       item_desc: item.item_desc,
     });
-    return true;
+    return { success: true, data: 'Successfully inserted new item!' };
   } catch (error) {
     console.error(error);
-    return false;
+    return { success: false, message: 'Unable to insert new item' };
   }
 }
 
-export async function deleteItem(id: number) {
+export async function deleteItem(id: number): Promise<Result<string>> {
   try {
     await db.delete(items).where(eq(items.id, id));
-    return true;
+    return { success: true, data: 'Deleted item' };
   } catch (error) {
     console.error(error);
-    return false;
+    return { success: false, message: 'Unable to delete item' };
   }
 }
 
@@ -116,16 +131,16 @@ export async function insertSale(sale: {
   sale_price: number;
   item_id: number;
   sale_date: string;
-}) {
+}): Promise<Result<string>> {
   try {
     await db.insert(sales).values({
       sale_price: sale.sale_price,
       sale_date: sale.sale_date,
       item_id: sale.item_id,
     });
-    return true;
+    return { success: true, data: 'Successfully inserted new sale' };
   } catch (error) {
     console.error(error);
-    return false;
+    return { success: false, message: 'Unable to insert new sale' };
   }
 }

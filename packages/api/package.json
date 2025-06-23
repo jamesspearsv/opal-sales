@@ -2,7 +2,7 @@
   "name": "@packages/api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.tsx",
+    "dev": "PROD=true tsx watch src/index.tsx",
     "build": "tsc",
     "start": "PROD=true node dist/src/index.js",
     "drizzle:generate": "pnpm drizzle-kit generate",

@@ -8,29 +8,15 @@ import {
   selectItem,
   deleteItem,
 } from './db/queries.js';
-import ItemsView from './ui/views/ItemsView.js';
-import SalesView from './ui/views/SalesView.js';
-import { parseCents } from '../../shared/src/lib.js';
-import type { SuccessResponse, Item, Sale } from '@packages/shared';
-
-export const routes = {
-  Items: '/items',
-  Sales: '/sales',
-  Home: '/',
-  Bundle: '/bundle',
-};
+import { parseCents } from '@packages/shared';
+import type {
+  SuccessResponse,
+  Item,
+  Sale,
+  ErrorResponse,
+} from '@packages/shared';
 
 export const api = new Hono();
-
-api.get(routes.Home, async (c) => {
-  const date = new Date();
-  const year = date.getFullYear;
-  const month = date.getMonth() + 1;
-
-  const sales = await selectSales();
-
-  return c.json({ rows: sales });
-});
 
 api.get('/seed', async (c) => {
   const result = await seedDatabase();
@@ -38,12 +24,18 @@ api.get('/seed', async (c) => {
   return c.text('Unable to seed database...');
 });
 
-api.get(routes.Items, async (c) => {
-  const rows = await selectItems();
-  return c.render(<ItemsView rows={rows || []} />);
+api.get('/items', async (c) => {
+  const result = await selectItems();
+  if (!result.success) {
+    return c.json(
+      { message: 'Unable to query items data' } as ErrorResponse,
+      500
+    );
+  }
+  return c.json({ data: result.data } as SuccessResponse<Item[]>);
 });
 
-api.post(routes.Items, async (c) => {
+api.post('/items', async (c) => {
   const data = await c.req.formData();
 
   const name = data.get('name') as string;
@@ -59,17 +51,24 @@ api.post(routes.Items, async (c) => {
     list_price: price_int,
     item_desc: '',
   });
-  if (!result) return c.redirect('/?error=true');
 
-  return c.redirect(routes.Items);
+  if (!result.success) {
+    return c.json({ message: result.message } as ErrorResponse, 500);
+  }
+
+  return c.json({ data: result.data } as SuccessResponse<string>);
 });
 
-api.get(routes.Sales, async (c) => {
-  const rows = await selectSales();
-  return c.render(<SalesView rows={rows as { sales: Sale; items: Item }[]} />);
+api.get('/sales', async (c) => {
+  const result = await selectSales();
+  if (!result.success) {
+    return c.json({ message: result.message } as ErrorResponse, 500);
+  }
+
+  return c.json({ data: result.data } as SuccessResponse<Sale[]>);
 });
 
-api.post(routes.Sales, async (c) => {
+api.post('/sales', async (c) => {
   const data = await c.req.formData();
   const item_id = data.get('item_id') as string;
   const sale_price = data.get('sale_price') as string;
@@ -84,47 +83,52 @@ api.post(routes.Sales, async (c) => {
     sale_date: parsed_date,
   });
 
-  if (!result) return c.redirect(routes.Items + '?error=true');
+  if (!result.success) {
+    return c.json({ message: result.message } as ErrorResponse, 500);
+  }
 
-  return c.redirect(routes.Items);
+  return c.json({
+    data: 'Successfully inserted new sale',
+  } as SuccessResponse<string>);
 });
 
-api.post(routes.Bundle, async (c) => {
-  const data = await c.req.formData();
-  const items = data.get('items') as string;
-  const itemsList = items.split(',');
+// TODO: [ ] update /bundle handler
+// api.post('/bundle', async (c) => {
+//   const data = await c.req.formData();
+//   const items = data.get('items') as string;
+//   const itemsList = items.split(',');
 
-  const queries = itemsList.map((id) => selectItem(parseInt(id)));
-  const results = await Promise.all(queries);
-  const totalListPrice = results.reduce((a, item) => {
-    if (item) {
-      return a + item.list_price;
-    } else return 0;
-  }, 0);
-  let newDesc = 'Items in bundle:';
-  results.forEach((item, index) => {
-    if (item && index < results.length - 1) {
-      newDesc = newDesc + `${item.name}, `;
-    } else if (item) {
-      newDesc = newDesc + ` and ${item.name}`;
-    }
-  });
+//   const queries = itemsList.map((id) => selectItem(parseInt(id)));
+//   const results = await Promise.all(queries);
+//   const totalListPrice = results.data.reduce((a, item) => {
+//     if (item) {
+//       return a + item.list_price;
+//     } else return 0;
+//   }, 0);
+//   let newDesc = 'Items in bundle:';
+//   results.forEach((item, index) => {
+//     if (item && index < results.length - 1) {
+//       newDesc = newDesc + `${item.name}, `;
+//     } else if (item) {
+//       newDesc = newDesc + ` and ${item.name}`;
+//     }
+//   });
 
-  const totalPurchaseCost = results.reduce((a, item) => {
-    if (item) {
-      return a + item.purchase_cost;
-    } else return 0;
-  }, 0);
+//   const totalPurchaseCost = results.reduce((a, item) => {
+//     if (item) {
+//       return a + item.purchase_cost;
+//     } else return 0;
+//   }, 0);
 
-  const insertResult = await insertItem({
-    name: `Item Bundle`,
-    purchase_cost: totalPurchaseCost,
-    list_price: totalListPrice,
-    item_desc: newDesc,
-  });
+//   const insertResult = await insertItem({
+//     name: `Item Bundle`,
+//     purchase_cost: totalPurchaseCost,
+//     list_price: totalListPrice,
+//     item_desc: newDesc,
+//   });
 
-  const deleteQueries = itemsList.map((id) => deleteItem(parseInt(id)));
-  await Promise.all(deleteQueries);
+//   const deleteQueries = itemsList.map((id) => deleteItem(parseInt(id)));
+//   await Promise.all(deleteQueries);
 
-  if (insertResult) return c.redirect(routes.Items);
-});
+//   if (insertResult) return c.redirect('/items');
+// });
