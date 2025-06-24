@@ -17,6 +17,12 @@ export interface Sale {
   purchase_cost: number | null;
 }
 
+/* API RESPONSE TYPES */
+export type GetItemsResponse = SuccessResponse<Item[]>;
+export type PostItemsResponse = SuccessResponse<string>;
+export type GetSalesResponse = SuccessResponse<Sale[]>;
+export type PostSalesResponse = SuccessResponse<string>;
+
 /* UTILITY TYPES */
 export interface SuccessResponse<T> {
   data: T;

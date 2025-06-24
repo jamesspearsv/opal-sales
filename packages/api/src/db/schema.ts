@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
-import { drizzle } from 'drizzle-orm/libsql/node';
 import { sql } from 'drizzle-orm';
 
 /** Items sqlite table */

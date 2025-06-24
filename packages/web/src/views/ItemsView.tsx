@@ -1,36 +1,33 @@
-import type { Item, Sale } from '@packages/shared';
-import Modal from '@web/components/Modal';
-import AddSale from '@web/forms/AddSale';
+import type { ErrorResponse, GetItemsResponse, Item } from '@packages/shared';
+import { useEffect, useState } from 'react';
 
-interface HomeProps {
-  rows: {
-    items: Item;
-    sales: Sale | null;
-  }[];
-}
+export default function ItemsView() {
+  const [items, setItems] = useState<Item[]>([]);
+  const [error, setError] = useState('');
 
-export default function HomeView(props: HomeProps) {
+  useEffect(() => {
+    (async function getItems() {
+      const res = await fetch('/api/items');
+
+      if (!res.ok) {
+        const errorMessage = (await res.json()) as ErrorResponse;
+        setError(errorMessage.message);
+        setItems([]);
+      }
+
+      const json = (await res.json()) as GetItemsResponse;
+      setError('');
+      setItems(json.data);
+    })();
+  }, []);
+
   return (
-    <section x-data="{selected: []}">
+    <section>
       <div>
         <h1>Items</h1>
-        <template x-if="selected.length > 1">
-          <form action="/bundle" method="post" x-ref="bundle-form">
-            <input type="hidden" name="items" x-bind:value="selected" />
-            <input type="submit" value="Make a bundle" style={{ margin: 0 }} />
-          </form>
-        </template>
+        {/* TODO: [ ] Add item action buttons */}
       </div>
-      <table
-        x-on:select="() => {
-        console.log('listening to select')
-        console.log(typeof selected)
-        selected.push($event.detail.id)
-        }"
-        x-on:remove="() => {
-        selected = selected.filter((id) => id !== $event.detail.id)
-        }"
-      >
+      <table>
         <thead>
           <th></th>
           <th>name</th>
@@ -39,37 +36,16 @@ export default function HomeView(props: HomeProps) {
           <th></th>
         </thead>
         <tbody>
-          {props.rows.map(
-            (row) =>
-              !row.sales && (
-                <tr>
-                  <td>
-                    <input
-                      type="checkbox"
-                      value={row.items.id}
-                      x-on:change="() => {
-                       if ($event.currentTarget.checked) {
-                       $dispatch('select', {id: $event.currentTarget.value})
-                       } else {
-                        $dispatch('remove', {id: $event.currentTarget.value})}
-                      }"
-                      x-ref="checkbox"
-                    />
-                  </td>
-                  <td>{row.items.name}</td>
-                  <td>${Number(row.items.purchase_cost / 100).toFixed(2)}</td>
-                  <td>${Number(row.items.list_price / 100).toFixed(2)}</td>
-                  <td>
-                    <Modal
-                      label={row.sales ? 'Sold' : 'Record Sale'}
-                      disabled={!!row.sales}
-                    >
-                      <AddSale item_id={row.items.id} />
-                    </Modal>
-                  </td>
-                </tr>
-              )
-          )}
+          {items.map((item) => (
+            <tr>
+              <td>
+                <input type="checkbox" />
+              </td>
+              <td>{item.name}</td>
+              <td>${Number(item.purchase_cost / 100).toFixed(2)}</td>
+              <td>${Number(item.list_price / 100).toFixed(2)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </section>

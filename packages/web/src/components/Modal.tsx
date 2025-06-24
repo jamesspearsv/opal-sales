@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 
 interface ModalProps extends PropsWithChildren {
   label: string;
@@ -6,20 +6,26 @@ interface ModalProps extends PropsWithChildren {
 }
 
 export default function Modal(props: ModalProps) {
+  const [open, setOpen] = useState(false);
+  const modal = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (modal.current) {
+      if (open) modal.current.showModal();
+      if (!open) modal.current.close();
+    }
+  }, [open]);
   return (
-    <div
-      x-data="{ open: false }"
-      {...{ 'x-on:keydown.escape': 'open = false' }}
-    >
+    <div>
       {!props.disabled ? (
-        <button x-on:click="open = true">{props.label}</button>
+        <button onClick={() => setOpen(true)}>{props.label}</button>
       ) : (
         <button disabled={props.disabled}>{props.label}</button>
       )}
-      <dialog x-bind:open="open" x-cloak x-trap="open">
+      <dialog ref={modal}>
         <article>
           <div>{props.children}</div>
-          <button>Cancel</button>
+          <button onClick={() => setOpen(false)}>Cancel</button>
         </article>
       </dialog>
     </div>

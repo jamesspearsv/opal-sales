@@ -10,10 +10,11 @@ import {
 } from './db/queries.js';
 import { parseCents } from '@packages/shared';
 import type {
-  SuccessResponse,
-  Item,
-  Sale,
   ErrorResponse,
+  PostItemsResponse,
+  GetItemsResponse,
+  GetSalesResponse,
+  PostSalesResponse,
 } from '@packages/shared';
 
 export const api = new Hono();
@@ -32,7 +33,7 @@ api.get('/items', async (c) => {
       500
     );
   }
-  return c.json({ data: result.data } as SuccessResponse<Item[]>);
+  return c.json({ data: result.data } as GetItemsResponse);
 });
 
 api.post('/items', async (c) => {
@@ -56,7 +57,7 @@ api.post('/items', async (c) => {
     return c.json({ message: result.message } as ErrorResponse, 500);
   }
 
-  return c.json({ data: result.data } as SuccessResponse<string>);
+  return c.json({ data: result.data } as PostItemsResponse);
 });
 
 api.get('/sales', async (c) => {
@@ -65,7 +66,7 @@ api.get('/sales', async (c) => {
     return c.json({ message: result.message } as ErrorResponse, 500);
   }
 
-  return c.json({ data: result.data } as SuccessResponse<Sale[]>);
+  return c.json({ data: result.data } as GetSalesResponse);
 });
 
 api.post('/sales', async (c) => {
@@ -89,7 +90,7 @@ api.post('/sales', async (c) => {
 
   return c.json({
     data: 'Successfully inserted new sale',
-  } as SuccessResponse<string>);
+  } as PostSalesResponse);
 });
 
 // TODO: [ ] update /bundle handler
