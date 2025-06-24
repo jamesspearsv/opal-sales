@@ -22,12 +22,14 @@ export default function Modal(props: ModalProps) {
       ) : (
         <button disabled={props.disabled}>{props.label}</button>
       )}
-      <dialog ref={modal}>
-        <article>
-          <div>{props.children}</div>
-          <button onClick={() => setOpen(false)}>Cancel</button>
-        </article>
-      </dialog>
+      {open && (
+        <dialog ref={modal}>
+          <article>
+            <div>{props.children}</div>
+            <button onClick={() => setOpen(false)}>Cancel</button>
+          </article>
+        </dialog>
+      )}
     </div>
   );
 }

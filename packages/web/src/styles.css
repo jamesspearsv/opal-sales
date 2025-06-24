@@ -1,3 +1,5 @@
+@import 'bulma/css/bulma.css';
+
 :root {
   --nav-width: 15rem;
   --nav-margin: 1rem;
