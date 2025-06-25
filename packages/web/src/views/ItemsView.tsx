@@ -67,7 +67,6 @@ export default function ItemsView() {
             <td>name</td>
             <td>purchase_cost</td>
             <td>list_price</td>
-            <td></td>
           </tr>
         </thead>
         <tbody>
