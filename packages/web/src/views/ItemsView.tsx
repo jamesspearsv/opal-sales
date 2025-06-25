@@ -9,6 +9,8 @@ export default function ItemsView() {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [error, setError] = useState('');
 
+  console.log(error);
+
   useEffect(() => {
     (async function getItems() {
       const res = await fetch('/api/items');
@@ -42,7 +44,6 @@ export default function ItemsView() {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
             gap: '1rem',
           }}
         >

@@ -1,5 +1,4 @@
 import { useState, type PropsWithChildren } from 'react';
-import clsx from 'clsx';
 
 interface PopoverProps extends PropsWithChildren {
   label: string;
@@ -8,12 +7,12 @@ interface PopoverProps extends PropsWithChildren {
 export default function Popover(props: PopoverProps) {
   const [open, setOpen] = useState(false);
 
+  console.log(open);
+
   return (
     <>
       <button onClick={() => setOpen(true)}>{props.label}</button>
-      <section
-        className={clsx({ modal: true, 'is-active': open, 'is-clipped': open })}
-      >
+      <section>
         <div className="modal-background"></div>
         <article className="modal-content card">
           {props.children}

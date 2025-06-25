@@ -12,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<IndexView />} />
-          <Route path="/items" element={<ItemsView rows={[]} />} />
+          <Route path="/items" element={<ItemsView />} />
           <Route path="/sales" element={<SalesView rows={[]} />} />
         </Routes>
       </BrowserRouter>
