@@ -1,0 +1,9 @@
+POST http://localhost:3000/api/bundle HTTP/1.1
+Content-Type: application/json
+
+{
+    "id_list": [1,2,3],
+    "bundle_name": "A new bundle",
+    "list_price": "8.00",
+    "purchase_cost": "0.00"
+}

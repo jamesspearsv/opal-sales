@@ -1,16 +1,17 @@
 import type { ErrorResponse, GetItemsResponse, Item } from '@packages/shared';
 import Modal from '@web/components/Modal';
+import AddBundleForm from '@web/forms/AddBundle';
 import AddItemForm from '@web/forms/AddItem';
 import AddSale from '@web/forms/AddSale';
 import { useEffect, useState } from 'react';
 
 export default function ItemsView() {
   const [items, setItems] = useState<Item[]>([]);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState('');
   //! hack: figure out a more efficient to handle data updating and refreshing
-  const [updater, setUpdater] = useState(Math.random()); 
+  const [updater, setUpdater] = useState(Math.random());
 
   useEffect(() => {
     (async function getItems() {
@@ -25,16 +26,19 @@ export default function ItemsView() {
       const json = (await res.json()) as GetItemsResponse;
       setError('');
       setItems(json.data);
+      setSelectedItems([]);
     })();
   }, [updater]);
 
-  function handleCheckboxChange(id: number, action: 'push' | 'remove') {
+  function handleCheckboxChange(index: number, action: 'push' | 'remove') {
     if (action === 'push') {
       const newArray = [...selectedItems];
-      newArray.push(id);
+      newArray.push(items[index]);
       setSelectedItems(newArray);
     } else if (action === 'remove') {
-      const newArray = selectedItems.filter((itemId) => id !== itemId);
+      const newArray = selectedItems.filter(
+        (newItem) => items[index].id !== newItem.id
+      );
       setSelectedItems(newArray);
     }
   }
@@ -49,36 +53,42 @@ export default function ItemsView() {
           }}
         >
           <h1>Items</h1>
-          {/* Conditionally render item action buttons */}
-          {selectedItems.length === 1 && (
-            <Modal label="Add A Sale" updater={updater}>
-              <AddSale item_id={selectedItems[0]} />
-            </Modal>
-          )}
-          {selectedItems.length > 1 && <button>Make A Bundle</button>}
           <Modal label="New Item" updater={updater}>
             <AddItemForm updater={setUpdater} />
           </Modal>
+          {/* Conditionally render item action buttons */}
+          {selectedItems.length === 1 && (
+            <Modal label="Sell" updater={updater}>
+              <AddSale item={selectedItems[0]} setUpdater={setUpdater} />
+            </Modal>
+          )}
+          {selectedItems.length > 1 && (
+            <Modal label="Bundle">
+              <AddBundleForm items={selectedItems} />
+            </Modal>
+          )}
         </div>
       </div>
       <table>
         <thead>
           <tr>
-            <td></td>
+            <td>
+              <input type="checkbox" />
+            </td>
             <td>name</td>
             <td>purchase_cost</td>
             <td>list_price</td>
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
+          {items.map((item, index) => (
             <tr key={item.id}>
               <td>
                 <input
                   type="checkbox"
                   onChange={(e) =>
                     handleCheckboxChange(
-                      item.id,
+                      index,
                       e.currentTarget.checked ? 'push' : 'remove'
                     )
                   }

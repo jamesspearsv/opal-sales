@@ -17,7 +17,7 @@ export default function Modal(props: ModalProps) {
     }
   }, [open]);
 
-  useEffect(() => setOpen((open) => !open), [props.updater]);
+  useEffect(() => setOpen(false), [props.updater]);
 
   return (
     <div>

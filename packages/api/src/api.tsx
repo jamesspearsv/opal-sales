@@ -5,6 +5,7 @@ import {
   insertItem,
   insertSale,
   selectSales,
+  selectItem,
 } from './db/queries.js';
 import { parseCents } from '@packages/shared';
 import type {
@@ -102,42 +103,49 @@ api.post('/sales', async (c) => {
 });
 
 // TODO: [ ] update /bundle handler
-// api.post('/bundle', async (c) => {
-//   const data = await c.req.formData();
-//   const items = data.get('items') as string;
-//   const itemsList = items.split(',');
+api.post('/bundle', async (c) => {
+  const body = await c.req.json();
 
-//   const queries = itemsList.map((id) => selectItem(parseInt(id)));
-//   const results = await Promise.all(queries);
-//   const totalListPrice = results.data.reduce((a, item) => {
-//     if (item) {
-//       return a + item.list_price;
-//     } else return 0;
-//   }, 0);
-//   let newDesc = 'Items in bundle:';
-//   results.forEach((item, index) => {
-//     if (item && index < results.length - 1) {
-//       newDesc = newDesc + `${item.name}, `;
-//     } else if (item) {
-//       newDesc = newDesc + ` and ${item.name}`;
-//     }
-//   });
+  return c.json(body);
+  /*
+  - get ids to bundle from client
+  - 
+  */
 
-//   const totalPurchaseCost = results.reduce((a, item) => {
-//     if (item) {
-//       return a + item.purchase_cost;
-//     } else return 0;
-//   }, 0);
+  // const queries = itemsList.map((id) => selectItem(parseInt(id)));
+  // const results = await Promise.all(queries);
+  // results.forEach(result => {
+  //   if (!result.success)
+  // })
+  // const totalListPrice = results.reduce((a, item) => {
+  //   if (item) {
+  //     return a + item..list_price;
+  //   } else return 0;
+  // }, 0);
+  // let newDesc = 'Items in bundle:';
+  // results.forEach((item, index) => {
+  //   if (item && index < results.length - 1) {
+  //     newDesc = newDesc + `${item.name}, `;
+  //   } else if (item) {
+  //     newDesc = newDesc + ` and ${item.name}`;
+  //   }
+  // });
 
-//   const insertResult = await insertItem({
-//     name: `Item Bundle`,
-//     purchase_cost: totalPurchaseCost,
-//     list_price: totalListPrice,
-//     item_desc: newDesc,
-//   });
+  // const totalPurchaseCost = results.reduce((a, item) => {
+  //   if (item) {
+  //     return a + item.purchase_cost;
+  //   } else return 0;
+  // }, 0);
 
-//   const deleteQueries = itemsList.map((id) => deleteItem(parseInt(id)));
-//   await Promise.all(deleteQueries);
+  // const insertResult = await insertItem({
+  //   name: `Item Bundle`,
+  //   purchase_cost: totalPurchaseCost,
+  //   list_price: totalListPrice,
+  //   item_desc: newDesc,
+  // });
 
-//   if (insertResult) return c.redirect('/items');
-// });
+  // const deleteQueries = itemsList.map((id) => deleteItem(parseInt(id)));
+  // await Promise.all(deleteQueries);
+
+  // if (insertResult) return c.redirect('/items');
+});

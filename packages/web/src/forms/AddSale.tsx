@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import type { Item } from '@packages/shared';
+import { useState, type SetStateAction } from 'react';
 
 interface FormValues {
   sale_date: string;
@@ -6,11 +7,14 @@ interface FormValues {
   sale_price: string;
 }
 
-export default function AddSale(props: { item_id: number }) {
+export default function AddSale(props: {
+  item: Item;
+  setUpdater: React.Dispatch<SetStateAction<number>>;
+}) {
   const initialState: FormValues = {
     sale_date: '',
     sale_price: '',
-    item_id: props.item_id,
+    item_id: props.item.id,
   };
 
   const [formValues, setFormValues] = useState(initialState);
@@ -26,7 +30,21 @@ export default function AddSale(props: { item_id: number }) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    // TODO: finish submit handler
+    const res = await fetch('/api/sales', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formValues),
+    });
+
+    if (!res.ok) return; // TODO: handle failed request
+
+    const json = await res.json();
+    console.log(json);
+
+    setFormValues(initialState);
+    props.setUpdater(Math.random());
   }
 
   return (
@@ -36,7 +54,7 @@ export default function AddSale(props: { item_id: number }) {
           type="hidden"
           name="item_id"
           id="item_id"
-          value={props.item_id}
+          value={props.item.id}
         />
         <label htmlFor="sale_date">Date</label>
         <input
