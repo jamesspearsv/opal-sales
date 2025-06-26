@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
 interface ModalProps extends PropsWithChildren {
   label: string;
   disabled?: boolean;
+  updater?: number;
 }
 
 export default function Modal(props: ModalProps) {
@@ -15,6 +16,9 @@ export default function Modal(props: ModalProps) {
       if (!open) modal.current.close();
     }
   }, [open]);
+
+  useEffect(() => setOpen((open) => !open), [props.updater]);
+
   return (
     <div>
       {!props.disabled ? (
@@ -25,8 +29,10 @@ export default function Modal(props: ModalProps) {
       {open && (
         <dialog ref={modal}>
           <article>
-            <div>{props.children}</div>
-            <button onClick={() => setOpen(false)}>Cancel</button>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {props.children}
+              <button onClick={() => setOpen(false)}>Cancel</button>
+            </div>
           </article>
         </dialog>
       )}

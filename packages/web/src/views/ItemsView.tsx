@@ -1,15 +1,15 @@
 import type { ErrorResponse, GetItemsResponse, Item } from '@packages/shared';
 import Modal from '@web/components/Modal';
-import NewItem from '@web/forms/AddItem';
+import AddItemForm from '@web/forms/AddItem';
 import AddSale from '@web/forms/AddSale';
 import { useEffect, useState } from 'react';
 
 export default function ItemsView() {
   const [items, setItems] = useState<Item[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const [error, setError] = useState('');
-
-  console.log(error);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setError] = useState('');
+  const [updater, setUpdater] = useState(Math.random());
 
   useEffect(() => {
     (async function getItems() {
@@ -25,7 +25,7 @@ export default function ItemsView() {
       setError('');
       setItems(json.data);
     })();
-  }, []);
+  }, [updater]);
 
   function handleCheckboxChange(id: number, action: 'push' | 'remove') {
     if (action === 'push') {
@@ -50,13 +50,13 @@ export default function ItemsView() {
           <h1>Items</h1>
           {/* Conditionally render item action buttons */}
           {selectedItems.length === 1 && (
-            <Modal label="Add A Sale">
+            <Modal label="Add A Sale" updater={updater}>
               <AddSale item_id={selectedItems[0]} />
             </Modal>
           )}
           {selectedItems.length > 1 && <button>Make A Bundle</button>}
-          <Modal label="New Item">
-            <NewItem />
+          <Modal label="New Item" updater={updater}>
+            <AddItemForm updater={setUpdater} />
           </Modal>
         </div>
       </div>

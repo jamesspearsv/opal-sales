@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type PropsWithChildren } from 'react';
 
 interface FormState {
   name: string;
@@ -8,7 +8,11 @@ interface FormState {
 
 const initialState: FormState = { name: '', purchase_cost: '', list_price: '' };
 
-export default function NewItem() {
+interface AddItemFormProps extends PropsWithChildren {
+  updater: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function AddItemForm(props: AddItemFormProps) {
   const [formValues, setFormValues] = useState(initialState);
 
   function handleInputChange<K extends keyof FormState>(
@@ -31,6 +35,7 @@ export default function NewItem() {
 
     setFormValues(initialState);
     console.log(await res.json());
+    props.updater(Math.random());
   }
 
   return (
