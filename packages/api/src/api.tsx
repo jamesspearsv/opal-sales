@@ -75,12 +75,15 @@ api.get('/sales', async (c) => {
 });
 
 api.post('/sales', async (c) => {
-  const data = await c.req.formData();
-  const item_id = data.get('item_id') as string;
-  const sale_price = data.get('sale_price') as string;
-  const sale_date = data.get('sale_date') as string;
-  const parsed_date = new Date(sale_date).toISOString().replace('T', ' ');
+  // const data = await c.req.formData();
+  // const item_id = data.get('item_id') as string;
+  // const sale_price = data.get('sale_price') as string;
+  // const sale_date = data.get('sale_date') as string;
 
+  const body = await c.req.json();
+  const { item_id, sale_price, sale_date } = body;
+
+  const parsed_date = new Date(sale_date).toISOString().replace('T', ' ');
   const amount_int = parseCents(sale_price);
 
   const result = await insertSale({

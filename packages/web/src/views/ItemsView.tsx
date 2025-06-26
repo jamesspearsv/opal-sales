@@ -9,7 +9,8 @@ export default function ItemsView() {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setError] = useState('');
-  const [updater, setUpdater] = useState(Math.random());
+  //! hack: figure out a more efficient to handle data updating and refreshing
+  const [updater, setUpdater] = useState(Math.random()); 
 
   useEffect(() => {
     (async function getItems() {
