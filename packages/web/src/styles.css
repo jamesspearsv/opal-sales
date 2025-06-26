@@ -1,6 +1,12 @@
+@import '@picocss/pico/css/pico.classless.indigo.min.css';
+
 :root {
-  --nav-width: 15rem;
-  --nav-margin: 1rem;
+  --spacing-0: 0.75rem;
+  --spacing-1: 1rem;
+  --spacing-2: 1.25rem;
+  --spacing-3: 1.5rem;
+  --spacing-4: 1.75rem;
+  --spacing-5: 2rem;
 }
 
 * {
@@ -9,10 +15,6 @@
   box-sizing: border-box;
 }
 
-body > * {
-  grid-column: 1 !important;
-}
-
 main {
-  width: 90%;
+  padding-inline: var(--spacing-4);
 }

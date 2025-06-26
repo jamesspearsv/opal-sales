@@ -5,8 +5,6 @@ import {
   insertItem,
   insertSale,
   selectSales,
-  selectItem,
-  deleteItem,
 } from './db/queries.js';
 import { parseCents } from '@packages/shared';
 import type {
@@ -37,12 +35,17 @@ api.get('/items', async (c) => {
 });
 
 api.post('/items', async (c) => {
-  // collect request json data
-  const data = await c.req.formData();
+  const body = await c.req.json();
+  console.log(body);
 
-  const name = data.get('name') as string;
-  const list_price = data.get('list_price') as string;
-  const purchase_cost = data.get('purchase_cost') as string;
+  const { name, list_price, purchase_cost } = body;
+
+  // collect request json data
+  // const data = await c.req.formData();
+
+  // const name = data.get('name') as string;
+  // const list_price = data.get('list_price') as string;
+  // const purchase_cost = data.get('purchase_cost') as string;
 
   // parse purchase cost and list price into cents
   const cost_int = parseCents(purchase_cost);
