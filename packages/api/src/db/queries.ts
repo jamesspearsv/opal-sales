@@ -1,5 +1,5 @@
 import { db } from './connection.js';
-import { eq, isNull } from 'drizzle-orm';
+import { and, eq, inArray, isNull } from 'drizzle-orm';
 import { seed } from 'drizzle-seed';
 import { items, sales } from './schema.js';
 import type { Item, Result, Sale } from '@packages/shared';
@@ -45,7 +45,7 @@ export async function selectItems(): Promise<Result<Item[]>> {
       })
       .from(items)
       .leftJoin(sales, eq(sales.item_id, items.id))
-      .where(isNull(sales.sale_date));
+      .where(and(isNull(sales.sale_date), eq(items.bundled, false)));
     return { success: true, data: rows };
   } catch (error) {
     console.error(error);
@@ -142,5 +142,15 @@ export async function insertSale(sale: {
   } catch (error) {
     console.error(error);
     return { success: false, message: 'Unable to insert new sale' };
+  }
+}
+
+export async function bundleItems(ids: number[]): Promise<Result<string>> {
+  try {
+    await db.update(items).set({ bundled: true }).where(inArray(items.id, ids));
+    return { success: true, data: 'Bundled item!' };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'Unable to bundle item' };
   }
 }

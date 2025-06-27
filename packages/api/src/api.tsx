@@ -6,6 +6,8 @@ import {
   insertSale,
   selectSales,
   selectItem,
+  deleteItem,
+  bundleItems,
 } from './db/queries.js';
 import { parseCents } from '@packages/shared';
 import type {
@@ -14,6 +16,9 @@ import type {
   GetItemsResponse,
   GetSalesResponse,
   PostSalesResponse,
+  BundleRequest,
+  SuccessResponse,
+  PostBundleResponse,
 } from '@packages/shared';
 
 export const api = new Hono();
@@ -105,12 +110,35 @@ api.post('/sales', async (c) => {
 // TODO: [ ] update /bundle handler
 api.post('/bundle', async (c) => {
   const body = await c.req.json();
+  const { bundle_name, bundle_desc, list_price, purchase_cost, item_ids } =
+    body as BundleRequest;
 
-  return c.json(body);
-  /*
-  - get ids to bundle from client
-  - 
-  */
+  const bundleResult = await bundleItems(item_ids);
+
+  // insert new bundled item
+  const insertResult = await insertItem({
+    name: bundle_name,
+    purchase_cost,
+    list_price,
+    item_desc: bundle_desc,
+  });
+
+  if (!insertResult.success) {
+    return c.json(
+      { message: 'Unable to create new bundle' } as ErrorResponse,
+      500
+    );
+  }
+
+  // set selected items as bundled
+  if (!bundleResult.success) {
+    // TODO: add logic to un-bundle items
+    return c.json({ message: 'Unable to bundle items' } as ErrorResponse, 500);
+  }
+
+  return c.json({
+    data: 'New bundle created and items bundled',
+  } as PostBundleResponse);
 
   // const queries = itemsList.map((id) => selectItem(parseInt(id)));
   // const results = await Promise.all(queries);

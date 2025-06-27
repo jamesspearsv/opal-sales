@@ -64,7 +64,7 @@ export default function ItemsView() {
           )}
           {selectedItems.length > 1 && (
             <Modal label="Bundle">
-              <AddBundleForm items={selectedItems} />
+              <AddBundleForm items={selectedItems} setUpdater={setUpdater} />
             </Modal>
           )}
         </div>

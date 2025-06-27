@@ -9,6 +9,7 @@ export const items = sqliteTable('items', {
   purchase_cost: int().notNull(), // in total cents
   list_price: int().notNull(), // in total cents
   item_desc: text(),
+  bundled: int({ mode: 'boolean' }).default(false),
 });
 
 export const sales = sqliteTable('sales', {

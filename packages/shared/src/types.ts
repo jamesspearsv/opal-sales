@@ -17,11 +17,21 @@ export interface Sale {
   purchase_cost: number | null;
 }
 
+/* API REQUEST TYPES */
+export interface BundleRequest {
+  bundle_name: string;
+  bundle_desc: string;
+  list_price: number;
+  purchase_cost: number;
+  item_ids: number[];
+}
+
 /* API RESPONSE TYPES */
 export type GetItemsResponse = SuccessResponse<Item[]>;
 export type PostItemsResponse = SuccessResponse<string>;
 export type GetSalesResponse = SuccessResponse<Sale[]>;
 export type PostSalesResponse = SuccessResponse<string>;
+export type PostBundleResponse = SuccessResponse<string>;
 
 /* UTILITY TYPES */
 export interface SuccessResponse<T> {
