@@ -1,4 +1,4 @@
-CREATE TABLE `items` (
+CREATE TABLE IF NOT EXISTS `items` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
 	`purchase_cost` integer NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE `items` (
 	`item_desc` text
 );
 --> statement-breakpoint
-CREATE TABLE `sales` (
+CREATE TABLE IF NOT EXISTS `sales` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`sale_price` integer NOT NULL,
 	`sale_date` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,

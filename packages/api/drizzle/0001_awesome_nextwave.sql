@@ -1,0 +1,1 @@
+ALTER TABLE `items` ADD `bundled` integer DEFAULT false;

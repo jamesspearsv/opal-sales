@@ -24,7 +24,10 @@
     "noUncheckedSideEffectImports": true,
 
     "baseUrl": "./",
-    "paths": { "@api/*": ["../api/src/*"], "@web/*": ["./src/*"] }
+    "paths": {
+      "@api/*": ["../api/src/*"],
+      "@web/*": ["./src/*"]
+    }
   },
   "include": ["src"]
 }

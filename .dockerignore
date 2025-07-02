@@ -1,0 +1,10 @@
+**/dist
+.env
+*.sqlite*
+node_modules
+**/node_modules
+**/.gitignore
+*.http
+publish-image.sh
+Dockerfile
+docker-compose.yaml

@@ -177,3 +177,5 @@ api.post('/bundle', async (c) => {
 
   // if (insertResult) return c.redirect('/items');
 });
+
+api.get('/', (c) => c.json({ status: 'healthy' }));
