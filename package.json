@@ -4,9 +4,11 @@
   "description": "",
   "scripts": {
     "dev": "pnpm run -r --parallel --aggregate-output dev",
-    "build": "pnpm -r build",
+    "build:shared": "pnpm --filter shared build",
+    "build:api": "pnpm --filter api build",
+    "build:web": "pnpm --filter web build",
     "start": "pnpm --filter api start",
-    "docker:build": "docker build -t opal-sales:dev --progress=plain ."
+    "docker:build": "docker build -t opal-sales:dev --progress=plain --no-cache ."
   },
   "keywords": [],
   "author": "James Spears, V",

@@ -8,3 +8,4 @@ node_modules
 publish-image.sh
 Dockerfile
 docker-compose.yaml
+**/tsconfig.tsbuildinfo

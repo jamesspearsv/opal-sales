@@ -16,6 +16,7 @@ COPY . .
 RUN pnpm install
 
 # build is not showing up in the container... why?
-RUN pnpm --filter shared build 
+# RUN pnpm run --filter shared build 
+RUN pnpm run -r build
 
 CMD ["tree", "/app"]
