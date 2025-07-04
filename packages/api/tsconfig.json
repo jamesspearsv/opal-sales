@@ -9,7 +9,8 @@
     "types": ["node"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
+    "rootDir": "src",
     "outDir": "dist"
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "drizzle.config.ts"]
 }

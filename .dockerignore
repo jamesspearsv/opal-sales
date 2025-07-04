@@ -1,6 +1,6 @@
 **/dist
 .env
-*.sqlite*
+**/*.sqlite*
 node_modules
 **/node_modules
 **/.gitignore
@@ -9,3 +9,5 @@ publish-image.sh
 Dockerfile
 docker-compose.yaml
 **/tsconfig.tsbuildinfo
+**/drizzle
+**/drizzle.config.ts

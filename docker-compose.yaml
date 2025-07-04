@@ -1,9 +1,11 @@
 services:
   app:
-    image: ghcr.io/jamesspearsv/opal-sales:latest
+    # image: ghcr.io/jamesspearsv/opal-sales:latest
+    image: opal-sales:dev
     ports:
       - '3000:3000'
     environment:
       - PROD=true
-    env_file: .env # MAKE SURE THIS FILE EXISTS
+    env_file: ./packages/api/.env
+    # env_file: .env # MAKE SURE THIS FILE EXISTS
     restart: unless-stopped

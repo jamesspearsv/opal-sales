@@ -8,6 +8,7 @@
     "build:api": "pnpm --filter api build",
     "build:web": "pnpm --filter web build",
     "start": "pnpm --filter api start",
+    "build:all": "pnpm -r build",
     "docker:build": "docker build -t opal-sales:dev --progress=plain --no-cache ."
   },
   "keywords": [],

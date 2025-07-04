@@ -10,3 +10,7 @@
   },
   "include": ["src"]
 }
+
+// TODO: Solve this weird bug
+//! the tsconfig.tsbuildinfo was preventing the package
+//! from being built. Why? Search online or ask AI.
