@@ -5,8 +5,6 @@ import {
   insertItem,
   insertSale,
   selectSales,
-  selectItem,
-  deleteItem,
   bundleItems,
 } from './db/queries.js';
 import { parseCents } from '@packages/shared';
@@ -17,7 +15,6 @@ import type {
   GetSalesResponse,
   PostSalesResponse,
   BundleRequest,
-  SuccessResponse,
   PostBundleResponse,
 } from '@packages/shared';
 
@@ -44,14 +41,8 @@ api.post('/items', async (c) => {
   const body = await c.req.json();
   console.log(body);
 
-  const { name, list_price, purchase_cost } = body;
-
   // collect request json data
-  // const data = await c.req.formData();
-
-  // const name = data.get('name') as string;
-  // const list_price = data.get('list_price') as string;
-  // const purchase_cost = data.get('purchase_cost') as string;
+  const { name, list_price, purchase_cost } = body;
 
   // parse purchase cost and list price into cents
   const cost_int = parseCents(purchase_cost);
@@ -81,11 +72,6 @@ api.get('/sales', async (c) => {
 });
 
 api.post('/sales', async (c) => {
-  // const data = await c.req.formData();
-  // const item_id = data.get('item_id') as string;
-  // const sale_price = data.get('sale_price') as string;
-  // const sale_date = data.get('sale_date') as string;
-
   const body = await c.req.json();
   const { item_id, sale_price, sale_date } = body;
 

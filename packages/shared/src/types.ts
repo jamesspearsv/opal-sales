@@ -14,7 +14,8 @@ export interface Sale {
   sale_price: number;
   sale_date: string;
   item_id: number;
-  purchase_cost: number | null;
+  purchase_cost: number;
+  item_name: string;
 }
 
 /* API REQUEST TYPES */

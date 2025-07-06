@@ -8,6 +8,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "paths": { "@packages/shared": ["packages/shared/dist"] }
+    "paths": { "@packages/shared": ["packages/shared"] }
   }
 }

@@ -77,9 +77,10 @@ export async function selectSales(): Promise<Result<Sale[]>> {
         sale_date: sales.sale_date,
         item_id: sales.item_id,
         purchase_cost: items.purchase_cost,
+        item_name: items.name,
       })
       .from(sales)
-      .leftJoin(items, eq(items.id, sales.item_id));
+      .innerJoin(items, eq(items.id, sales.item_id));
     return { success: true, data: rows };
   } catch (error) {
     console.error(error);

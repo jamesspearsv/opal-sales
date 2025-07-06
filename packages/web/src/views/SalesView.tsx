@@ -1,14 +1,20 @@
-import type { Item, Sale } from '@packages/shared';
-import type { PropsWithChildren } from 'react';
+import type { GetSalesResponse, Sale } from '@packages/shared';
+import { useEffect, useState } from 'react';
 
-interface SalesViewProps extends PropsWithChildren {
-  rows: {
-    sales: Sale;
-    items: Item;
-  }[];
-}
+export default function SalesView() {
+  const [rows, setRows] = useState<Sale[]>([]);
 
-export default function SalesView(props: SalesViewProps) {
+  useEffect(() => {
+    async function fetchSales() {
+      const res = await fetch('/api/sales');
+      if (!res.ok) return; // TODO: handle failed request
+      const json = (await res.json()) as GetSalesResponse;
+      setRows(json.data);
+    }
+
+    fetchSales();
+  }, []);
+
   return (
     <>
       <h1>All Sales</h1>
@@ -20,16 +26,14 @@ export default function SalesView(props: SalesViewProps) {
           <th>sale_date</th>
         </thead>
         <tbody>
-          {props.rows.map((row) => (
+          {rows.map((row) => (
             <tr>
-              <td>{row.items.name}</td>
-              <td>${Number(row.sales.sale_price / 100).toFixed(2)}</td>
+              <td>{row.item_name}</td>
+              <td>${Number(row.sale_price / 100).toFixed(2)}</td>
               <td>
-                {Number(
-                  (row.sales.sale_price - row.items.purchase_cost) / 100
-                ).toFixed(2)}
+                {Number((row.sale_price - row.purchase_cost) / 100).toFixed(2)}
               </td>
-              <td>{row.sales.sale_date}</td>
+              <td>{row.sale_date.split(' ')[0]}</td>
             </tr>
           ))}
         </tbody>

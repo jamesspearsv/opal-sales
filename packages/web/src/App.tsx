@@ -8,7 +8,7 @@ import '@web/styles.css';
 const router = createBrowserRouter([
   { path: '/', element: <IndexView /> },
   { path: '/items', element: <ItemsView /> },
-  { path: '/sales', element: <SalesView rows={[]} /> },
+  { path: '/sales', element: <SalesView /> },
 ]);
 
 function App() {
