@@ -1,12 +1,12 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import IndexView from './views/IndexView';
-import ItemsView from './views/ItemsView';
-import SalesView from './views/SalesView';
+import HomeView from '@web/views/HomeView';
+import ItemsView from '@web/views/ItemsView';
+import SalesView from '@web/views/SalesView';
 import Nav from './components/Nav';
 import '@web/styles.css';
 
 const router = createBrowserRouter([
-  { path: '/', element: <IndexView /> },
+  { path: '/', element: <HomeView /> },
   { path: '/items', element: <ItemsView /> },
   { path: '/sales', element: <SalesView /> },
 ]);
