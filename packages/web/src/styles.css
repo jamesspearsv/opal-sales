@@ -1,4 +1,4 @@
-@import '@picocss/pico/css/pico.classless.indigo.min.css';
+@import 'jump-css';
 
 :root {
   --spacing-0: 0.75rem;

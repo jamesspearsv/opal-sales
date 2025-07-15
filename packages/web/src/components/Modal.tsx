@@ -20,22 +20,22 @@ export default function Modal(props: ModalProps) {
   useEffect(() => setOpen(false), [props.updater]);
 
   return (
-    <div>
+    <>
       {!props.disabled ? (
         <button onClick={() => setOpen(true)}>{props.label}</button>
       ) : (
         <button disabled={props.disabled}>{props.label}</button>
       )}
       {open && (
-        <dialog ref={modal}>
+        <dialog ref={modal} onClose={() => setOpen(false)}>
           <article>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {props.children}
-              <button onClick={() => setOpen(false)}>Cancel</button>
             </div>
+            <button type="reset" onClick={() => setOpen(false)}></button>
           </article>
         </dialog>
       )}
-    </div>
+    </>
   );
 }

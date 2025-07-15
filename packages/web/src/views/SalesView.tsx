@@ -17,27 +17,35 @@ export default function SalesView() {
 
   return (
     <>
-      <h1>All Sales</h1>
-      <table>
-        <thead>
-          <th>item</th>
-          <th>sale_price</th>
-          <th>+/-</th>
-          <th>sale_date</th>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
+      <section>
+        <h1>All Sales</h1>
+      </section>
+      <section>
+        <table>
+          <thead>
             <tr>
-              <td>{row.item_name}</td>
-              <td>${Number(row.sale_price / 100).toFixed(2)}</td>
-              <td>
-                {Number((row.sale_price - row.purchase_cost) / 100).toFixed(2)}
-              </td>
-              <td>{row.sale_date.split(' ')[0]}</td>
+              <th>item</th>
+              <th>sale_price</th>
+              <th>+/-</th>
+              <th>sale_date</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr>
+                <td>{row.item_name}</td>
+                <td>${Number(row.sale_price / 100).toFixed(2)}</td>
+                <td>
+                  {Number((row.sale_price - row.purchase_cost) / 100).toFixed(
+                    2
+                  )}
+                </td>
+                <td>{row.sale_date.split(' ')[0]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
     </>
   );
 }

@@ -44,8 +44,8 @@ export default function ItemsView() {
   }
 
   return (
-    <section>
-      <div>
+    <>
+      <section>
         <div
           style={{
             display: 'flex',
@@ -68,39 +68,41 @@ export default function ItemsView() {
             </Modal>
           )}
         </div>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <td>
-              <input type="checkbox" />
-            </td>
-            <td>name</td>
-            <td>purchase_cost</td>
-            <td>list_price</td>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item, index) => (
-            <tr key={item.id}>
-              <td>
-                <input
-                  type="checkbox"
-                  onChange={(e) =>
-                    handleCheckboxChange(
-                      index,
-                      e.currentTarget.checked ? 'push' : 'remove'
-                    )
-                  }
-                />
-              </td>
-              <td>{item.name}</td>
-              <td>${Number(item.purchase_cost / 100).toFixed(2)}</td>
-              <td>${Number(item.list_price / 100).toFixed(2)}</td>
+      </section>
+      <section>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th>name</th>
+              <th>purchase_cost</th>
+              <th>list_price</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </section>
+          </thead>
+          <tbody>
+            {items.map((item, index) => (
+              <tr key={item.id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    onChange={(e) =>
+                      handleCheckboxChange(
+                        index,
+                        e.currentTarget.checked ? 'push' : 'remove'
+                      )
+                    }
+                  />
+                </td>
+                <td>{item.name}</td>
+                <td>${Number(item.purchase_cost / 100).toFixed(2)}</td>
+                <td>${Number(item.list_price / 100).toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    </>
   );
 }
